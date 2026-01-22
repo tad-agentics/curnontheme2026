@@ -4,14 +4,22 @@ add_action('wp_ajax_nopriv_mona_ajax_pagination_posts',  'mona_ajax_pagination_p
 function mona_ajax_pagination_posts()
 {
     $form = array();
-    parse_str($_POST['formdata'], $form);
-    $paged              = $_POST['paged'] ? $_POST['paged'] : 1;
-    $action             = $_POST['action_layout'] ? $_POST['action_layout'] : 'reload';
-    $flagAction         = $_POST['action_flag'];
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
+
+    $formdata = isset($_POST['formdata']) ? wp_unslash($_POST['formdata']) : '';
+    if (!empty($formdata)) {
+        parse_str($formdata, $form);
+    }
+    if (!is_array($form)) {
+        $form = [];
+    }
+    $paged              = isset($_POST['paged']) ? absint($_POST['paged']) : 1;
+    $action             = isset($_POST['action_layout']) ? sanitize_text_field($_POST['action_layout']) : 'reload';
+    $flagAction         = isset($_POST['action_flag']) ? sanitize_text_field($_POST['action_flag']) : '';
 
     $action_return      = $action;
-    $post_type          = $form['post_type'] ? $form['post_type'] : 'post';
-    $posts_per_page     = $form['posts_per_page'] ? $form['posts_per_page'] : 9;
+    $post_type          = !empty($form['post_type']) ? sanitize_key($form['post_type']) : 'post';
+    $posts_per_page     = !empty($form['posts_per_page']) ? absint($form['posts_per_page']) : 9;
     $offset             = ($paged - 1) * $posts_per_page;
     $order              = 'DESC';
     $argsPost = array(
@@ -29,7 +37,7 @@ function mona_ajax_pagination_posts()
     );
 
     if (isset($form['s']) && !empty($form['s'])) {
-        $argsPost['s'] = esc_attr($form['s']);
+        $argsPost['s'] = sanitize_text_field($form['s']);
     }
     // search
     if (isset($form['findProduct']) && !empty($form['findProduct'])) {
@@ -44,8 +52,10 @@ function mona_ajax_pagination_posts()
     }
 
     // product_cat
-    if (is_array($form['taxonomies']) && !empty($form['taxonomies'])) {
+    if (isset($form['taxonomies']) && is_array($form['taxonomies']) && !empty($form['taxonomies'])) {
         foreach ($form['taxonomies'] as $taxonomy => $slug) {
+            $taxonomy = sanitize_key($taxonomy);
+            $slug = sanitize_title($slug);
             if ($slug != '') {
                 $argsPost['tax_query'][] =  array(
                     'taxonomy'  => $taxonomy,
@@ -58,8 +68,10 @@ function mona_ajax_pagination_posts()
     }
 
     // product_cat
-    if (is_array($form['tax']) && !empty($form['tax'])) {
+    if (isset($form['tax']) && is_array($form['tax']) && !empty($form['tax'])) {
         foreach ($form['tax'] as $taxonomy => $slug) {
+            $taxonomy = sanitize_key($taxonomy);
+            $slug = sanitize_title($slug);
             if ($slug != '') {
                 $argsPost['tax_query'][] =  array(
                     'taxonomy'  => $taxonomy,
@@ -72,8 +84,10 @@ function mona_ajax_pagination_posts()
     }
 
     // taxonomy_color
-    if (is_array($form['taxonomy_color']) && !empty($form['taxonomy_color'])) {
+    if (isset($form['taxonomy_color']) && is_array($form['taxonomy_color']) && !empty($form['taxonomy_color'])) {
         foreach ($form['taxonomy_color'] as $taxonomy => $slug) {
+            $taxonomy = sanitize_key($taxonomy);
+            $slug = sanitize_title($slug);
             if ($slug != '') {
                 $argsPost['tax_query'][] =  array(
                     'taxonomy'  => $taxonomy,
@@ -86,8 +100,10 @@ function mona_ajax_pagination_posts()
     }
 
     // taxonomy_size
-    if (is_array($form['taxonomy_size']) && !empty($form['taxonomy_size'])) {
+    if (isset($form['taxonomy_size']) && is_array($form['taxonomy_size']) && !empty($form['taxonomy_size'])) {
         foreach ($form['taxonomy_size'] as $taxonomy => $slug) {
+            $taxonomy = sanitize_key($taxonomy);
+            $slug = sanitize_title($slug);
             if ($slug != '') {
                 $argsPost['tax_query'][] =  array(
                     'taxonomy'  => $taxonomy,
@@ -100,8 +116,10 @@ function mona_ajax_pagination_posts()
     }
 
     // taxonomy_material
-    if (is_array($form['taxonomy_material']) && !empty($form['taxonomy_material'])) {
+    if (isset($form['taxonomy_material']) && is_array($form['taxonomy_material']) && !empty($form['taxonomy_material'])) {
         foreach ($form['taxonomy_material'] as $taxonomy => $slug) {
+            $taxonomy = sanitize_key($taxonomy);
+            $slug = sanitize_title($slug);
             if ($slug != '') {
                 $argsPost['tax_query'][] =  array(
                     'taxonomy'  => $taxonomy,
@@ -138,7 +156,7 @@ function mona_ajax_pagination_posts()
     if (isset($form['rating']) && is_array($form['rating'])) {
         $argsPost['meta_query'][] = array(
             'key' => '_wc_average_rating',
-            'value' => $form['rating'],
+            'value' => array_map('floatval', $form['rating']),
             'compare' => '=',
             'type' => 'NUMERIC',
         );
@@ -160,20 +178,28 @@ function mona_ajax_pagination_posts()
                 AND pm.meta_key = '_price'";
 
             $conditions = [];
+            $params = [];
             foreach ($priceArray as $index => $price) {
-                $active = isset($price['active']) ? $price['active'] : '';
+                if (!is_array($price)) {
+                    continue;
+                }
+                $active = isset($price['active']) ? sanitize_text_field($price['active']) : '';
                 if (!empty($active)) {
-                    $option = isset($price['option']) ? $price['option'] : '';
+                    $option = isset($price['option']) ? sanitize_text_field($price['option']) : '';
                     if ($option === 'less') {
                         $single = isset($price['single']) ? floatval($price['single']) : 0;
-                        $conditions[] = "(pm.meta_value < {$single})";
+                        $conditions[] = "(pm.meta_value < %f)";
+                        $params[] = $single;
                     } elseif ($option === 'range') {
                         $from = isset($price['from']) ? floatval($price['from']) : 0;
                         $to = isset($price['to']) ? floatval($price['to']) : 0;
-                        $conditions[] = "(pm.meta_value >= {$from} AND pm.meta_value <= {$to})";
+                        $conditions[] = "(pm.meta_value >= %f AND pm.meta_value <= %f)";
+                        $params[] = $from;
+                        $params[] = $to;
                     } elseif ($option === 'more') {
                         $single = isset($price['single']) ? floatval($price['single']) : 0;
-                        $conditions[] = "(pm.meta_value > {$single})";
+                        $conditions[] = "(pm.meta_value > %f)";
+                        $params[] = $single;
                     }
                 }
             }
@@ -182,7 +208,8 @@ function mona_ajax_pagination_posts()
                 $sql .= ' AND (' . implode(' OR ', $conditions) . ')';
             }
 
-            $results = $wpdb->get_results($sql);
+            $prepared_sql = !empty($params) ? $wpdb->prepare($sql, $params) : $sql;
+            $results = $wpdb->get_results($prepared_sql);
             if ($results) {
                 foreach ($results as $result) {
                     $postIDs_byPrice[] = $result->ID;
@@ -195,7 +222,7 @@ function mona_ajax_pagination_posts()
         }
 
         if (isset($form['sort']) && !empty($form['sort'])) {
-            $sort = $form['sort'];
+            $sort = sanitize_text_field($form['sort']);
             switch ($sort) {
                 case 'az':
                     $argsPost['orderby'] = 'title';
@@ -351,7 +378,7 @@ function mona_ajax_pagination_posts()
         <div class="container">
             <div class="empty-product">
                 <a class="image-empty-product" href="<?php echo home_url(); ?>">
-                    <img src="<?php get_site_url(); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
+                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
                 </a>
                 <p class="text">
                     <?php _e('Hiện tại, sản phẩm bạn tìm kiếm hiện đang cập nhật. Vui lòng quay lại sau hoặc liên hệ với chúng tôi.', 'monamedia'); ?>
@@ -390,11 +417,19 @@ add_action('wp_ajax_mona_ajax_pagination_products',  'mona_ajax_pagination_produ
 add_action('wp_ajax_nopriv_mona_ajax_pagination_products',  'mona_ajax_pagination_products'); // no login
 function mona_ajax_pagination_products()
 {
-    $paged              = $_POST['paged'] ? $_POST['paged'] : 1;
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
+
+    $paged              = isset($_POST['paged']) ? absint($_POST['paged']) : 1;
     $form = array();
-    parse_str($_POST['formdata'], $form);
-    $post_type          = $form['post_type'] ? $form['post_type'] : 'post';
-    $posts_per_page     = $form['posts_per_page'] ? $form['posts_per_page'] : 12;
+    $formdata = isset($_POST['formdata']) ? wp_unslash($_POST['formdata']) : '';
+    if (!empty($formdata)) {
+        parse_str($formdata, $form);
+    }
+    if (!is_array($form)) {
+        $form = [];
+    }
+    $post_type          = !empty($form['post_type']) ? sanitize_key($form['post_type']) : 'post';
+    $posts_per_page     = !empty($form['posts_per_page']) ? absint($form['posts_per_page']) : 12;
     $offset             = ($paged - 1) * $posts_per_page;
     $order              = 'DESC';
     $argsPost = array(
@@ -411,13 +446,17 @@ function mona_ajax_pagination_products()
         ]
     );
 
+    $keyword = '';
     if (!empty($form['s'])) {
-        $argsPost['s'] = esc_attr($form['s']);
+        $keyword = sanitize_text_field($form['s']);
+        $argsPost['s'] = $keyword;
     }
 
     if (!empty($form['taxonomies'])) {
         if (is_array($form['taxonomies'])) {
             foreach ($form['taxonomies'] as $taxonomy => $slug) {
+                $taxonomy = sanitize_key($taxonomy);
+                $slug = sanitize_title($slug);
                 if ($slug != '') {
                     $argsPost['tax_query'][] =  array(
                         'taxonomy'  => $taxonomy,
@@ -442,20 +481,28 @@ function mona_ajax_pagination_products()
             AND pm.meta_key = '_price'";
 
         $conditions = [];
+        $params = [];
         foreach ($priceArray as $index => $price) {
-            $active = isset($price['active']) ? $price['active'] : '';
+            if (!is_array($price)) {
+                continue;
+            }
+            $active = isset($price['active']) ? sanitize_text_field($price['active']) : '';
             if (!empty($active)) {
-                $option = isset($price['option']) ? $price['option'] : '';
+                $option = isset($price['option']) ? sanitize_text_field($price['option']) : '';
                 if ($option === 'less') {
                     $single = isset($price['single']) ? floatval($price['single']) : 0;
-                    $conditions[] = "(pm.meta_value < {$single})";
+                    $conditions[] = "(pm.meta_value < %f)";
+                    $params[] = $single;
                 } elseif ($option === 'range') {
                     $from = isset($price['from']) ? floatval($price['from']) : 0;
                     $to = isset($price['to']) ? floatval($price['to']) : 0;
-                    $conditions[] = "(pm.meta_value >= {$from} AND pm.meta_value <= {$to})";
+                    $conditions[] = "(pm.meta_value >= %f AND pm.meta_value <= %f)";
+                    $params[] = $from;
+                    $params[] = $to;
                 } elseif ($option === 'more') {
                     $single = isset($price['single']) ? floatval($price['single']) : 0;
-                    $conditions[] = "(pm.meta_value > {$single})";
+                    $conditions[] = "(pm.meta_value > %f)";
+                    $params[] = $single;
                 }
             }
         }
@@ -464,7 +511,8 @@ function mona_ajax_pagination_products()
             $sql .= ' AND (' . implode(' OR ', $conditions) . ')';
         }
 
-        $results = $wpdb->get_results($sql);
+        $prepared_sql = !empty($params) ? $wpdb->prepare($sql, $params) : $sql;
+        $results = $wpdb->get_results($prepared_sql);
         if ($results) {
             foreach ($results as $result) {
                 $postIDs_byPrice[] = $result->ID;
@@ -477,7 +525,7 @@ function mona_ajax_pagination_products()
     }
 
     if (isset($form['sort']) && !empty($form['sort'])) {
-        $sort = $form['sort'];
+        $sort = sanitize_text_field($form['sort']);
         switch ($sort) {
             case 'az':
                 $argsPost['orderby'] = 'title';
@@ -543,7 +591,7 @@ function mona_ajax_pagination_products()
                  */
                 $slug = '/partials/loop/box';
                 $name = 'product';
-                echo get_template_part($slug, $name, ['keyword' => esc_attr($form['s'])]);
+                echo get_template_part($slug, $name, ['keyword' => esc_attr($keyword)]);
                 ?>
             </div>
         <?php }
@@ -572,7 +620,7 @@ function mona_ajax_pagination_products()
             'products_count'    => $postsMONA->have_posts() ? $postsMONA->found_posts : 0,
             'argsPosts'         => $argsPost,
             'scroll'            => $class_scroll,
-            'keyword'           => esc_attr($form['s'])
+            'keyword'           => esc_attr($keyword)
         ]
     );
     wp_die();
@@ -584,14 +632,22 @@ add_action('wp_ajax_nopriv_mona_ajax_pagination_home',  'mona_ajax_pagination_ho
 function mona_ajax_pagination_home()
 {
     $form = array();
-    parse_str($_POST['formdata'], $form);
-    $paged              = $_POST['paged'] ? $_POST['paged'] : 1;
-    $action             = $_POST['action_layout'] ? $_POST['action_layout'] : 'reload';
-    $flagAction         = $_POST['action_flag'];
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
+
+    $formdata = isset($_POST['formdata']) ? wp_unslash($_POST['formdata']) : '';
+    if (!empty($formdata)) {
+        parse_str($formdata, $form);
+    }
+    if (!is_array($form)) {
+        $form = [];
+    }
+    $paged              = isset($_POST['paged']) ? absint($_POST['paged']) : 1;
+    $action             = isset($_POST['action_layout']) ? sanitize_text_field($_POST['action_layout']) : 'reload';
+    $flagAction         = isset($_POST['action_flag']) ? sanitize_text_field($_POST['action_flag']) : '';
 
     $action_return      = $action;
-    $post_type          = $form['post_type'] ? $form['post_type'] : 'post';
-    $posts_per_page     = $form['posts_per_page'] ? $form['posts_per_page'] : 9;
+    $post_type          = !empty($form['post_type']) ? sanitize_key($form['post_type']) : 'post';
+    $posts_per_page     = !empty($form['posts_per_page']) ? absint($form['posts_per_page']) : 9;
     $offset             = ($paged - 1) * $posts_per_page;
     $order              = 'DESC';
     $argsPost = array(
@@ -623,8 +679,10 @@ function mona_ajax_pagination_home()
     }
 
     // product_cat
-    if (is_array($form['tax']) && !empty($form['tax'])) {
+    if (isset($form['tax']) && is_array($form['tax']) && !empty($form['tax'])) {
         foreach ($form['tax'] as $taxonomy => $slug) {
+            $taxonomy = sanitize_key($taxonomy);
+            $slug = sanitize_title($slug);
             if ($slug != '') {
                 $argsPost['tax_query'][] =  array(
                     'taxonomy'  => $taxonomy,
@@ -652,20 +710,28 @@ function mona_ajax_pagination_home()
                 AND pm.meta_key = '_price'";
 
             $conditions = [];
+            $params = [];
             foreach ($priceArray as $index => $price) {
-                $active = isset($price['active']) ? $price['active'] : '';
+                if (!is_array($price)) {
+                    continue;
+                }
+                $active = isset($price['active']) ? sanitize_text_field($price['active']) : '';
                 if (!empty($active)) {
-                    $option = isset($price['option']) ? $price['option'] : '';
+                    $option = isset($price['option']) ? sanitize_text_field($price['option']) : '';
                     if ($option === 'less') {
                         $single = isset($price['single']) ? floatval($price['single']) : 0;
-                        $conditions[] = "(pm.meta_value < {$single})";
+                        $conditions[] = "(pm.meta_value < %f)";
+                        $params[] = $single;
                     } elseif ($option === 'range') {
                         $from = isset($price['from']) ? floatval($price['from']) : 0;
                         $to = isset($price['to']) ? floatval($price['to']) : 0;
-                        $conditions[] = "(pm.meta_value >= {$from} AND pm.meta_value <= {$to})";
+                        $conditions[] = "(pm.meta_value >= %f AND pm.meta_value <= %f)";
+                        $params[] = $from;
+                        $params[] = $to;
                     } elseif ($option === 'more') {
                         $single = isset($price['single']) ? floatval($price['single']) : 0;
-                        $conditions[] = "(pm.meta_value > {$single})";
+                        $conditions[] = "(pm.meta_value > %f)";
+                        $params[] = $single;
                     }
                 }
             }
@@ -674,7 +740,8 @@ function mona_ajax_pagination_home()
                 $sql .= ' AND (' . implode(' OR ', $conditions) . ')';
             }
 
-            $results = $wpdb->get_results($sql);
+            $prepared_sql = !empty($params) ? $wpdb->prepare($sql, $params) : $sql;
+            $results = $wpdb->get_results($prepared_sql);
             if ($results) {
                 foreach ($results as $result) {
                     $postIDs_byPrice[] = $result->ID;
@@ -837,7 +904,7 @@ function mona_ajax_pagination_home()
         <div class="container">
             <div class="empty-product">
                 <a class="image-empty-product" href="<?php echo home_url(); ?>">
-                    <img src="<?php get_site_url(); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
+                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
                 </a>
                 <p class="text">
                     <?php _e('Hiện tại, sản phẩm bạn tìm kiếm hiện đang cập nhật. Vui lòng quay lại sau hoặc liên hệ với chúng tôi.', 'monamedia'); ?>

@@ -22,6 +22,7 @@ export default function MonaCreateModuleProduct() {
             type: "post",
             data: {
                 action: "mona_cart_fragments",
+                nonce: mona_ajax_url.nonce,
             },
             error: function(request) {
                 boxLoading.removeClass("loading");
@@ -53,6 +54,7 @@ export default function MonaCreateModuleProduct() {
                     action: "m_update_quantity_item",
                     qty: qty,
                     key: key,
+                    nonce: mona_ajax_url.nonce,
                 },
                 success: function(response) {
                     if (response.success) {
@@ -87,11 +89,12 @@ export default function MonaCreateModuleProduct() {
                 data: {
                     action: "m_add_wishlist_item",
                     product_id: product_id,
+                    nonce: mona_ajax_url.nonce,
                 },
                 success: function(response) {
                     boxLoading.removeClass("processing");
                     if (response.success == true) {
-                        $(".m-wishlist .num").html(response.data.number);
+                        $(".m-wishlist .num").text(response.data.number);
 
                         $class.addClass("active");
                         $class.removeClass("m-add-wishlist").addClass("m-remove-wishlist");
@@ -162,13 +165,14 @@ export default function MonaCreateModuleProduct() {
                 data: {
                     action: "m_remove_wishlist_item",
                     key: key,
+                    nonce: mona_ajax_url.nonce,
                 },
                 success: function(response) {
                     boxLoading.removeClass("loading");
                     boxLoading_1.removeClass("processing");
                     if (response.success == true) {
                         AlertCustom("success", "Successful", response.data.mess);
-                        $(".m-wishlist .num").html(response.data.number);
+                        $(".m-wishlist .num").text(response.data.number);
                         $(".wishlist").html(response.data.wishlist);
                         $class.removeClass("active");
                         $class.removeClass("m-remove-wishlist").addClass("m-add-wishlist");
@@ -198,6 +202,7 @@ export default function MonaCreateModuleProduct() {
                 type: "POST",
                 data: {
                     action: "m_popupopen_card",
+                    nonce: mona_ajax_url.nonce,
                 },
                 success: function(response) {
                     boxLoading.removeClass("processing");
@@ -235,6 +240,7 @@ export default function MonaCreateModuleProduct() {
                     action: "m_add_cart_flash",
                     product_id: product_id,
                     qty: quantity,
+                    nonce: mona_ajax_url.nonce,
                 },
                 success: function(response) {
                     isloadingGroup.removeClass("processing");
@@ -282,6 +288,7 @@ export default function MonaCreateModuleProduct() {
                     action: "m_remove_cart_item",
                     key: key,
                     qty: qty,
+                    nonce: mona_ajax_url.nonce,
                 },
                 success: function(response) {
                     boxLoading.removeClass("processing");
@@ -359,6 +366,7 @@ export default function MonaCreateModuleProduct() {
                 data: {
                     action: "m_update_can_product",
                     oderId: oder_id,
+                    nonce: mona_ajax_url.nonce,
                 },
                 success: function(response) {
                     boxLoading.removeClass("loading");
@@ -421,6 +429,7 @@ export default function MonaCreateModuleProduct() {
                     data: {
                         action: "mona_ajax_find_variation",
                         formdata: formdata,
+                        nonce: mona_ajax_url.nonce,
                     },
                     error: function(request) {
                         loading.removeClass("processing");
@@ -517,6 +526,7 @@ export default function MonaCreateModuleProduct() {
                         data: {
                             action: "mona_ajax_find_variation",
                             formdata: formdata,
+                            nonce: mona_ajax_url.nonce,
                         },
                         error: function(request) {
                             loading.removeClass("processing");
@@ -563,6 +573,7 @@ export default function MonaCreateModuleProduct() {
                 data: {
                     action: "mona_product_popup_attr",
                     product_id: id,
+                    nonce: mona_ajax_url.nonce,
                 },
                 success: function(result) {
                     loading.removeClass("processing");

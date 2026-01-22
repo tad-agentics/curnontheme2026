@@ -17,6 +17,7 @@ export default function cart() {
             type: "post",
             data: {
                 action: "mona_cart_fragments",
+                nonce: mona_ajax_url.nonce,
             },
             error: function(request) {
                 processing.removeClass("loading");
@@ -53,6 +54,7 @@ export default function cart() {
                     action: "mona_ajax_add_to_cart",
                     formdata: formdata,
                     type: act,
+                    nonce: mona_ajax_url.nonce,
                 },
                 error: function(request) {
                     loading.removeClass("processing");
@@ -106,6 +108,7 @@ export default function cart() {
                     action: "mona_ajax_add_to_cart",
                     formdata: formdata,
                     type: act,
+                    nonce: mona_ajax_url.nonce,
                 },
                 error: function(request) {
                     loading.removeClass("processing");

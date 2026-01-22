@@ -13,11 +13,28 @@ function check_verify($pass1, $pass2)
 function m_a_change_password()
 {
     $form = array();
-    parse_str($_POST['formData'], $form);
-    $currentPass = $form['current-password'];
-    $newPass = $form['new-pass'];
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
+
+    if (!is_user_logged_in()) {
+        wp_send_json_error(
+            [
+                'mess'   => __('Unauthorized', 'monamedia'),
+            ]
+        );
+        wp_die();
+    }
+
+    $formdata = isset($_POST['formData']) ? wp_unslash($_POST['formData']) : '';
+    if (!empty($formdata)) {
+        parse_str($formdata, $form);
+    }
+    if (!is_array($form)) {
+        $form = [];
+    }
+    $currentPass = isset($form['current-password']) ? sanitize_text_field($form['current-password']) : '';
+    $newPass = isset($form['new-pass']) ? sanitize_text_field($form['new-pass']) : '';
     $id_user = get_current_user_id();
-    $newRepass = $form['new-repass'];
+    $newRepass = isset($form['new-repass']) ? sanitize_text_field($form['new-repass']) : '';
     if ($currentPass != '' && $newPass != '') {
         if (check_password($currentPass, $id_user)) {
             if (check_verify($newPass, $newRepass)) {
@@ -29,7 +46,7 @@ function m_a_change_password()
                 );
                 $on = wp_signon($args);
                 if ($on) {
-                    echo wp_send_json_success(
+                    wp_send_json_success(
                         [
                             'mess' => 'Password changed successfully.'
                         ]
@@ -69,15 +86,41 @@ add_action('wp_ajax_mona_update_ajax_shipping', 'mona_update_ajax_shipping');
 function mona_update_ajax_shipping()
 {
     $form = array();
-    $id_user = get_current_user_id();
-    parse_str($_POST['formData'], $form);
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
 
-    $shipping_first_name = $form['shipping_first_name'];
-    $shipping_last_name = $form['shipping_last_name'];
-    $shipping_address_1 = $form['shipping_address_1'];
-    $shipping_city = $form['shipping_city'];
-    $shipping_state = $form['shipping_state'];
-    $shipping_phone = $form['shipping_phone'];
+    if (!is_user_logged_in()) {
+        wp_send_json_error(
+            [
+                'mess'   => __('Unauthorized', 'monamedia'),
+            ]
+        );
+        wp_die();
+    }
+
+    $id_user = get_current_user_id();
+    $formdata = isset($_POST['formData']) ? wp_unslash($_POST['formData']) : '';
+    if (!empty($formdata)) {
+        parse_str($formdata, $form);
+    }
+    if (!is_array($form)) {
+        $form = [];
+    }
+
+    $shipping_first_name = isset($form['shipping_first_name']) ? sanitize_text_field($form['shipping_first_name']) : '';
+    $shipping_last_name = isset($form['shipping_last_name']) ? sanitize_text_field($form['shipping_last_name']) : '';
+    $shipping_address_1 = isset($form['shipping_address_1']) ? sanitize_text_field($form['shipping_address_1']) : '';
+    $shipping_city = isset($form['shipping_city']) ? sanitize_text_field($form['shipping_city']) : '';
+    $shipping_state = isset($form['shipping_state']) ? sanitize_text_field($form['shipping_state']) : '';
+    $shipping_phone = isset($form['shipping_phone']) ? sanitize_text_field($form['shipping_phone']) : '';
+
+    if (!empty($shipping_phone) && !preg_match('/^[0-9]{9,11}$/', $shipping_phone)) {
+        wp_send_json_error(
+            [
+                'mess'   => __('Số điện thoại không hợp lệ', 'monamedia'),
+            ]
+        );
+        wp_die();
+    }
 
 
     $user_info = get_userdata($id_user);
@@ -111,16 +154,42 @@ add_action('wp_ajax_m_a_edit_account', 'm_a_edit_account');
 function m_a_edit_account()
 {
     $form = array();
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
+
+    if (!is_user_logged_in()) {
+        wp_send_json_error(
+            [
+                'mess'   => __('Unauthorized', 'monamedia'),
+            ]
+        );
+        wp_die();
+    }
+
     $id_user = get_current_user_id();
-    parse_str($_POST['formData'], $form);
-    $DisplayName = $form['m-edit-name'];
-    $UserPhone = $form['m-edit-phone'];
-    $birthday = $form['birthday'];
-    $user_address = $form['m-edit-address'];
-    $user_zipcode = $form['m-edit-zipcode'];
+    $formdata = isset($_POST['formData']) ? wp_unslash($_POST['formData']) : '';
+    if (!empty($formdata)) {
+        parse_str($formdata, $form);
+    }
+    if (!is_array($form)) {
+        $form = [];
+    }
+    $DisplayName = isset($form['m-edit-name']) ? sanitize_text_field($form['m-edit-name']) : '';
+    $UserPhone = isset($form['m-edit-phone']) ? sanitize_text_field($form['m-edit-phone']) : '';
+    $birthday = isset($form['birthday']) ? sanitize_text_field($form['birthday']) : '';
+    $user_address = isset($form['m-edit-address']) ? sanitize_text_field($form['m-edit-address']) : '';
+    $user_zipcode = isset($form['m-edit-zipcode']) ? sanitize_text_field($form['m-edit-zipcode']) : '';
 
     // New code to handle gender
     $user_gender = isset($form['user_gender']) ? sanitize_text_field($form['user_gender']) : '';
+
+    if (!empty($UserPhone) && !preg_match('/^[0-9]{9,11}$/', $UserPhone)) {
+        wp_send_json_error(
+            [
+                'mess'   => __('Số điện thoại không hợp lệ', 'monamedia'),
+            ]
+        );
+        wp_die();
+    }
 
     $dateObj = DateTime::createFromFormat('d/m/Y', $birthday);
 
@@ -129,7 +198,7 @@ function m_a_edit_account()
 
     $args = array(
         'ID' => $id_user,
-        'display_name' => strip_tags($DisplayName),
+        'display_name' => $DisplayName,
     );
 
     $update = wp_update_user($args);
@@ -144,18 +213,18 @@ function m_a_edit_account()
     }
 
     if ($dateObj && $dateObj->format('d/m/Y') === $birthday) {
-        update_user_meta($id_user, '_address', strip_tags($user_address));
-        update_user_meta($id_user, '_zipcode', strip_tags($user_zipcode));
+        update_user_meta($id_user, '_address', $user_address);
+        update_user_meta($id_user, '_zipcode', $user_zipcode);
 
         $date = $dateObj->format('d/m/Y');
         update_user_meta($id_user, 'birthday', $date);
 
-        update_user_meta($id_user, '_phone', strip_tags($UserPhone));
+        update_user_meta($id_user, '_phone', $UserPhone);
 
         // Update gender information
         update_user_meta($id_user, 'user_gender', $user_gender);
 
-        echo wp_send_json_success(
+        wp_send_json_success(
             [
                 'mess' => 'Update successful'
             ]

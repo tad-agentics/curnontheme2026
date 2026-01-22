@@ -67,7 +67,7 @@
                 <div class="acc-card-title">
                     <div class="acc-pro-desc">
                         <span class="text">CURNON +</span><span class="icon">
-                            <img src="<?php get_site_url(); ?>/template/assets/images/dong.svg" alt="" /></span>
+                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/dong.svg" alt="" /></span>
                     </div>
                 </div>
                 <div class="acc-card-desc">
@@ -84,7 +84,7 @@
                 <div class="acc-card-title">
                     <div class="acc-pro-desc">
                         <span class="text">SILVER</span><span class="icon">
-                            <img src="<?php get_site_url(); ?>/template/assets/images/bac.svg" alt="" /></span>
+                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/bac.svg" alt="" /></span>
                     </div>
                 </div>
                 <div class="acc-card-desc">
@@ -102,7 +102,7 @@
                 <div class="acc-card-title">
                     <div class="acc-pro-desc">
                         <span class="text">GOLD</span><span class="icon">
-                            <img src="<?php get_site_url(); ?>/template/assets/images/vang.svg" alt="" /></span>
+                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/vang.svg" alt="" /></span>
                     </div>
                 </div>
                 <div class="acc-card-desc">
@@ -120,7 +120,7 @@
                 <div class="acc-card-title">
                     <div class="acc-pro-desc">
                         <span class="text">DIAMOND</span><span class="icon">
-                            <img src="<?php get_site_url(); ?>/template/assets/images/kimcuong.svg" alt="" /></span>
+                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/kimcuong.svg" alt="" /></span>
                     </div>
                 </div>
                 <div class="acc-card-desc">

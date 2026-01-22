@@ -68,7 +68,7 @@ if ($wishlist_array) :
                         <?php _e('Thêm vào giỏ hàng', 'monamedia'); ?>
                     </span>
                     <span class="icon">
-                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" />
                     </span>
                 </a>
 
@@ -80,7 +80,7 @@ if ($wishlist_array) :
                         <?php _e('Thêm vào giỏ hàng', 'monamedia'); ?>
                     </span>
                     <span class="icon">
-                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" />
                     </span>
 
                 </div>
@@ -109,19 +109,19 @@ if ($wishlist_array) :
                     <div class="recheck-item">
                         <input class="recheck-input" type="radio" name="" hidden="" />
                         <div class="recheck-checkbox">
-                            <img src="<?php get_site_url(); ?>/template/assets/images/img1.png" alt="" />
+                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img1.png" alt="" />
                         </div>
                     </div>
                     <div class="recheck-item">
                         <input class="recheck-input" type="radio" name="" hidden="" />
                         <div class="recheck-checkbox">
-                            <img src="<?php get_site_url(); ?>/template/assets/images/img2.png" alt="" />
+                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img2.png" alt="" />
                         </div>
                     </div>
                     <div class="recheck-item">
                         <input class="recheck-input" type="radio" name="" hidden="" />
                         <div class="recheck-checkbox">
-                            <img src="<?php get_site_url(); ?>/template/assets/images/img3.png" alt="" />
+                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img3.png" alt="" />
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@ if ($wishlist_array) :
 
                     <span class="text is-loading-group-mobile"> <?php _e('Thêm', 'monamedia'); ?></span>
                     <span class="icon">
-                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span>
+                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span>
 
                 </div>
 
@@ -149,7 +149,7 @@ if ($wishlist_array) :
                 <a class="pro-add pro-add-mb m-add-to-cart-flash" data-product-id="<?php echo $item; ?>">
                     <span class="text is-loading-group"> <?php _e('Thêm', 'monamedia'); ?></span>
                     <span class="icon">
-                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span>
+                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span>
                 </a>
 
                 <?php } ?>
@@ -168,7 +168,7 @@ if ($wishlist_array) :
 <div class="container" style="justify-content: center; display: flex; text-align: center;">
     <div class="empty-product">
         <a class="image-empty-product" href="<?php echo home_url(); ?>">
-            <img src="<?php get_site_url(); ?>/template/assets/images/wishlist.png"
+            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/wishlist.png"
                 alt="this is a image of empty product">
         </a>
         <p class="text">

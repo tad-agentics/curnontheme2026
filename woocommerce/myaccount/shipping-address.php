@@ -14,13 +14,14 @@ $shipping_phone = get_user_meta($userid, 'shipping_phone', true);
 
 <div class="acc-add acc-add-input-js">
     <form action="" class="is-loading-group" id="mona_update_shipping">
+        <?php wp_nonce_field('mona_ajax_nonce', 'mona_nonce'); ?>
         <div class="acc-add-flex">
             <div class="acc-add-left">
                 <p class="text">Email </p>
             </div>
             <div class="acc-add-right">
                 <div class="ip-control">
-                    <input class="re-input" name="shipping_email" type="text" value="<?php echo $email ?>" disabled>
+                    <input class="re-input" name="shipping_email" type="text" value="<?php echo esc_attr($email); ?>" disabled>
                 </div>
             </div>
         </div>
@@ -30,7 +31,7 @@ $shipping_phone = get_user_meta($userid, 'shipping_phone', true);
             </div>
             <div class="acc-add-right">
                 <div class="ip-control">
-                    <input class="re-input" name="shipping_last_name" type="text" value="<?php echo $last_name ?>"
+                    <input class="re-input" name="shipping_last_name" type="text" value="<?php echo esc_attr($last_name); ?>"
                         disabled>
                 </div>
             </div>
@@ -41,7 +42,7 @@ $shipping_phone = get_user_meta($userid, 'shipping_phone', true);
             </div>
             <div class="acc-add-right">
                 <div class="ip-control">
-                    <input class="re-input" name="shipping_phone" type="text" value="<?php echo $shipping_phone ?>"
+                    <input class="re-input" name="shipping_phone" type="text" value="<?php echo esc_attr($shipping_phone); ?>"
                         disabled>
                 </div>
             </div>
@@ -52,7 +53,7 @@ $shipping_phone = get_user_meta($userid, 'shipping_phone', true);
             </div>
             <div class="acc-add-right">
                 <div class="ip-control">
-                    <input class="re-input" name="shipping_address_1" type="text" value="<?php echo $address_1 ?>"
+                    <input class="re-input" name="shipping_address_1" type="text" value="<?php echo esc_attr($address_1); ?>"
                         disabled>
                 </div>
                 <!-- <div class="ip-control x3">

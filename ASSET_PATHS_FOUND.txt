@@ -1,0 +1,53 @@
+get_site_url() . '/template/assets/images/
+get_site_url() . '/template/assets/images/default-mona.png
+get_site_url() . '/template/assets/images/empty-evaluate.png
+get_site_url() ?>/template/assets/images/empty-cart.png
+get_site_url(); ?>/template/assets/images/Star-fill.svg
+get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg
+get_site_url(); ?>/template/assets/images/Star.svg
+get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg
+get_site_url(); ?>/template/assets/images/bac.svg
+get_site_url(); ?>/template/assets/images/bdban-img-mb.jpg
+get_site_url(); ?>/template/assets/images/bdban-img.jpg
+get_site_url(); ?>/template/assets/images/brown.svg
+get_site_url(); ?>/template/assets/images/bs1.jpg
+get_site_url(); ?>/template/assets/images/bs2.jpg
+get_site_url(); ?>/template/assets/images/cart.svg
+get_site_url(); ?>/template/assets/images/close.png
+get_site_url(); ?>/template/assets/images/cod.png
+get_site_url(); ?>/template/assets/images/dblog-loca.jpg
+get_site_url(); ?>/template/assets/images/ddh
+get_site_url(); ?>/template/assets/images/dong.svg
+get_site_url(); ?>/template/assets/images/empty-cart-curnon.png
+get_site_url(); ?>/template/assets/images/fb.svg
+get_site_url(); ?>/template/assets/images/filter-icon.png
+get_site_url(); ?>/template/assets/images/fundiin.png
+get_site_url(); ?>/template/assets/images/hamburger.svg
+get_site_url(); ?>/template/assets/images/heart.svg
+get_site_url(); ?>/template/assets/images/icon-ghichu.svg
+get_site_url(); ?>/template/assets/images/icon-heart.svg
+get_site_url(); ?>/template/assets/images/icon-suc.svg
+get_site_url(); ?>/template/assets/images/icon-tag.svg
+get_site_url(); ?>/template/assets/images/img1.png
+get_site_url(); ?>/template/assets/images/img2.png
+get_site_url(); ?>/template/assets/images/img3.png
+get_site_url(); ?>/template/assets/images/kimcuong.svg
+get_site_url(); ?>/template/assets/images/location.svg
+get_site_url(); ?>/template/assets/images/megadh.png
+get_site_url(); ?>/template/assets/images/momo.png
+get_site_url(); ?>/template/assets/images/pattern.png
+get_site_url(); ?>/template/assets/images/poli1.svg
+get_site_url(); ?>/template/assets/images/poli3.svg
+get_site_url(); ?>/template/assets/images/pro-cart.png
+get_site_url(); ?>/template/assets/images/pro1.jpg
+get_site_url(); ?>/template/assets/images/pro2.jpg
+get_site_url(); ?>/template/assets/images/search.svg
+get_site_url(); ?>/template/assets/images/ts1.jpg
+get_site_url(); ?>/template/assets/images/ts2.jpg
+get_site_url(); ?>/template/assets/images/ts3.jpg
+get_site_url(); ?>/template/assets/images/ts4.jpg
+get_site_url(); ?>/template/assets/images/twitter.svg
+get_site_url(); ?>/template/assets/images/user.svg
+get_site_url(); ?>/template/assets/images/vang.svg
+get_site_url(); ?>/template/assets/images/vnpay.png
+get_site_url(); ?>/template/assets/images/wishlist.png

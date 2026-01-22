@@ -3,17 +3,28 @@ add_action('wp_ajax_mona_ajax_find_variation', 'mona_ajax_find_variation'); // l
 add_action('wp_ajax_nopriv_mona_ajax_find_variation', 'mona_ajax_find_variation'); // no login
 function mona_ajax_find_variation()
 {
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
 
-    global $woocommerce;
     $form = [];
-    parse_str($_POST['formdata'], $form);
-    $product_id = intval($form['product_id']);
-    $product = wc_get_product($product_id);
+    $formdata = isset($_POST['formdata']) ? wp_unslash($_POST['formdata']) : '';
+    if (!empty($formdata)) {
+        parse_str($formdata, $form);
+    }
+    if (!is_array($form)) {
+        $form = [];
+    }
+    $sanitized_form = [];
+    foreach ($form as $key => $value) {
+        $sanitized_form[$key] = is_array($value) ? $value : sanitize_text_field($value);
+    }
+    $form = $sanitized_form;
+    $product_id = isset($form['product_id']) ? absint($form['product_id']) : 0;
+    $product = $product_id ? wc_get_product($product_id) : false;
     $request_addons = [];
     $cart_item_data = [];
     $attrbutes_data = [];
 
-    if (!$product->is_type('variable')) {
+    if (!$product || !$product->is_type('variable')) {
 
         wp_send_json_error(
             [
@@ -32,7 +43,7 @@ function mona_ajax_find_variation()
 
 
 
-                    $request_attributes = $form[$attribute_name];
+                    $request_attributes = isset($form[$attribute_name]) ? sanitize_title($form[$attribute_name]) : '';
 
 
                     if (empty($request_attributes)) {
@@ -51,7 +62,7 @@ function mona_ajax_find_variation()
                     if ($term) {
                         $attrbutes_data['attribute_' . $attribute_name] = $term->slug;
                     } else {
-                        $attrbutes_data['attribute_' . $attribute_name] = $request_attributes;
+                        $attrbutes_data['attribute_' . $attribute_name] = sanitize_text_field($request_attributes);
                     }
                 }
             }
@@ -106,18 +117,26 @@ add_action('wp_ajax_nopriv_mona_ajax_add_to_cart_combo', 'mona_ajax_add_to_cart_
 
 function mona_ajax_add_to_cart_combo()
 {
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
+
     if (!class_exists('woocommerce') || !WC()->cart) {
         return;
     }
 
-    global $woocommerce;
-    $form = array();
-    parse_str($_POST['formdata'], $form);
-    $product_id = intval($form['product_id']);
-    $quantity = $form['quantity'] ? intval($form['quantity']) : 1;
+    $form = [];
+    $formdata = isset($_POST['formdata']) ? wp_unslash($_POST['formdata']) : '';
+    if (!empty($formdata)) {
+        parse_str($formdata, $form);
+    }
+    if (!is_array($form)) {
+        $form = [];
+    }
+    $form = array_map('sanitize_text_field', $form);
+    $product_id = isset($form['product_id']) ? absint($form['product_id']) : 0;
+    $quantity = isset($form['quantity']) && absint($form['quantity']) > 0 ? absint($form['quantity']) : 1;
 
     $cart_item_data = [];
-    $combo_items = $form['combo_items'];
+    $combo_items = isset($form['combo_items']) && is_array($form['combo_items']) ? $form['combo_items'] : [];
     $product_item_key = '';
 
     if (empty($product_id)) {
@@ -139,12 +158,28 @@ function mona_ajax_add_to_cart_combo()
         //add to cart [product root];
         $product_root_id = $product_id;
         $_product = wc_get_product($product_id);
+        if (!$_product) {
+            $label = __('Sản phẩm', 'monamedia');
+            wp_send_json_error(
+                [
+                    'title' => $label . ' ' . __('Does not exist or an error occurred.', 'monamedia'),
+                    'cart-open' => false,
+                    'message'   => __('An error occurred! Please try again later.', 'monamedia'),
+                    'action'    => [
+                        'title' => __('Try again', 'monamedia'),
+                        'title_close' => __('Close', 'monamedia'),
+                    ],
+                ]
+            );
+            wp_die();
+        }
         if ($_product->is_type('variable')) {
             $mona_attr = [];
             if (is_array($_product->get_attributes())) {
                 foreach ($_product->get_attributes() as $attribute_name => $attribute) {
                     if ($attribute['variation'] || $attribute['visible']) {
-                        if (empty($form[$attribute_name])) {
+                        $attribute_value = isset($form[$attribute_name]) ? sanitize_title($form[$attribute_name]) : '';
+                        if (empty($attribute_value)) {
                             $attribute_label_name = wc_attribute_label($attribute_name);
                             wp_send_json_error(
                                 [
@@ -159,13 +194,14 @@ function mona_ajax_add_to_cart_combo()
                             );
                             wp_die();
                         }
-                        $term = get_term_by('slug', $form[$attribute_name], $attribute_name);
+                        $term = get_term_by('slug', $attribute_value, $attribute_name);
                         if (!empty($term)) {
                             $cart_item_data['attributes']['attribute_' . $attribute_name] = $term->slug;
                             $mona_attr['attribute_' . $attribute_name] = $term->slug;
                         } else {
-                            $cart_item_data['attributes']['attribute_' . $attribute_name] = $form[$attribute_name];
-                            $mona_attr['attribute_' . $attribute_name] = $form[$attribute_name];
+                            $raw_value = isset($form[$attribute_name]) ? sanitize_text_field($form[$attribute_name]) : '';
+                            $cart_item_data['attributes']['attribute_' . $attribute_name] = $raw_value;
+                            $mona_attr['attribute_' . $attribute_name] = $raw_value;
                         }
                     }
                 }
@@ -185,8 +221,8 @@ function mona_ajax_add_to_cart_combo()
             if (is_array($_product->get_attributes())) {
                 foreach ($_product->get_attributes() as $attribute_name => $attribute) {
                     if ($attribute['visible']) {
-                        if (empty($form[$attribute_name])) {
-                            var_dump('sdcdsds');
+                        $attribute_value = isset($form[$attribute_name]) ? sanitize_title($form[$attribute_name]) : '';
+                        if (empty($attribute_value)) {
                             $attribute_label_name = wc_attribute_label($attribute_name);
                             wp_send_json_error(
                                 [
@@ -201,13 +237,14 @@ function mona_ajax_add_to_cart_combo()
                             );
                             wp_die();
                         }
-                        $term = get_term_by('slug', $form[$attribute_name], $attribute_name);
+                        $term = get_term_by('slug', $attribute_value, $attribute_name);
                         if (!empty($term)) {
                             $cart_item_data['attributes']['attribute_' . $attribute_name] = $term->slug;
                             $mona_attr['attribute_' . $attribute_name] = $term->slug;
                         } else {
-                            $cart_item_data['attributes']['attribute_' . $attribute_name] = $form[$attribute_name];
-                            $mona_attr['attribute_' . $attribute_name] = $form[$attribute_name];
+                            $raw_value = isset($form[$attribute_name]) ? sanitize_text_field($form[$attribute_name]) : '';
+                            $cart_item_data['attributes']['attribute_' . $attribute_name] = $raw_value;
+                            $mona_attr['attribute_' . $attribute_name] = $raw_value;
                         }
                     }
                 }
@@ -225,11 +262,14 @@ function mona_ajax_add_to_cart_combo()
             // print_r( $combo_items );
             $combo_i = 0;
             foreach ($combo_items as $key => $combo_item) {
+                if (!is_array($combo_item)) {
+                    continue;
+                }
 
                 if (!empty($combo_item['combo_id'])) {
-                    $combo_id       = $combo_item['combo_id'];
-                    $combo_quantity = $combo_item['combo_quantity'] ? $combo_item['combo_quantity'] : 1;
-                    $combo_price    = $combo_item['combo_price'];
+                    $combo_id       = absint($combo_item['combo_id']);
+                    $combo_quantity = !empty($combo_item['combo_quantity']) ? absint($combo_item['combo_quantity']) : 1;
+                    $combo_price    = isset($combo_item['combo_price']) ? floatval($combo_item['combo_price']) : 0;
 
                     $combo_item_data   = array(
                         'role'                  => 'leaf',
@@ -242,7 +282,7 @@ function mona_ajax_add_to_cart_combo()
                     $mona_combo_attr = [];
                     $combo_product_by_combo_id = wc_get_product($combo_id);
 
-                    if ($combo_product_by_combo_id->is_type('variation')) {
+                    if ($combo_product_by_combo_id && $combo_product_by_combo_id->is_type('variation')) {
 
                         $product_parent = $combo_product_by_combo_id->get_parent_id();
                         $product_parent_obj = wc_get_product($product_parent);
@@ -250,7 +290,8 @@ function mona_ajax_add_to_cart_combo()
                         if (is_array($product_parent_obj->get_attributes())) {
                             foreach ($product_parent_obj->get_attributes() as $attribute_name => $attribute) {
                                 if ($attribute['visible'] || $attribute['variation']) {
-                                    if (empty($form['combo_items'][$key]['attributes'][$attribute_name])) {
+                                    $combo_attributes = isset($combo_item['attributes']) && is_array($combo_item['attributes']) ? $combo_item['attributes'] : [];
+                                    if (empty($combo_attributes[$attribute_name])) {
                                         $attribute_label_name = wc_attribute_label($attribute_name);
                                         wp_send_json_error(
                                             [
@@ -268,16 +309,18 @@ function mona_ajax_add_to_cart_combo()
                                 }
                             }
                         }
-                        if (is_array($combo_item['attributes'])) {
+                        if (!empty($combo_item['attributes']) && is_array($combo_item['attributes'])) {
                             foreach ($combo_item['attributes'] as $attribute_name => $attribute) {
 
-                                $term = get_term_by('slug', $attribute, $attribute_name);
+                                $attribute_value = sanitize_title($attribute);
+                                $term = get_term_by('slug', $attribute_value, $attribute_name);
                                 if (!empty($term)) {
                                     $mona_combo_attr['attribute_' . $attribute_name] = $term->slug;
                                     $combo_item_data['attributes']['attribute_' . $attribute_name] = $term->slug;
                                 } else {
-                                    $mona_combo_attr['attribute_' . $attribute_name] = $attribute;
-                                    $combo_item_data['attributes']['attribute_' . $attribute_name] = $attribute;
+                                    $raw_value = sanitize_text_field($attribute);
+                                    $mona_combo_attr['attribute_' . $attribute_name] = $raw_value;
+                                    $combo_item_data['attributes']['attribute_' . $attribute_name] = $raw_value;
                                 }
                             }
                         }
@@ -312,8 +355,7 @@ function mona_ajax_add_to_cart_combo()
         WC()->cart->set_session();
 
         if (!empty($product_item_key)) {
-
-            echo wp_send_json_success(
+            wp_send_json_success(
                 [
                     'title'     => __('Notification!', 'monamedia'),
                     'message'   => __('Compo successfully added to the cart', 'monamedia'),
@@ -324,8 +366,8 @@ function mona_ajax_add_to_cart_combo()
                     //     'title_close' => __('Đóng', 'monamedia'),
                     // ],
                     'cart_data' => [
-                        'count' => $woocommerce->cart->cart_contents_count,
-                        'total' => $woocommerce->cart->get_cart_total(),
+                        'count' => WC()->cart->get_cart_contents_count(),
+                        'total' => WC()->cart->get_cart_total(),
                     ],
                 ]
             );
@@ -353,7 +395,9 @@ add_action('wp_ajax_nopriv_mona_product_popup_attr', 'mona_product_popup_attr');
 
 function mona_product_popup_attr()
 {
-    $product_id = $_POST['product_id'];
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
+
+    $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
 
     if (!empty($product_id)) {
         ob_start();
@@ -361,7 +405,7 @@ function mona_product_popup_attr()
         get_template_part('partials/popup/PopupAttri', '', array("data" => $product_id));
 
         $item_content = ob_get_clean();
-        echo wp_send_json_success(
+        wp_send_json_success(
             [
 
                 'mess'   => __(' thành công', 'monamedia'),

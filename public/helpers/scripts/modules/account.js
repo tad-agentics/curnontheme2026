@@ -42,6 +42,7 @@ export default function MonaCreateModuleAccount() {
         data: {
           action: "m_a_edit_account",
           formData: formData,
+          nonce: mona_ajax_url.nonce,
         },
         success: function (response) {
           $this.removeClass("processing");
@@ -73,6 +74,7 @@ export default function MonaCreateModuleAccount() {
         data: {
           action: "m_a_change_password",
           formData: formData,
+          nonce: mona_ajax_url.nonce,
         },
         success: function (response) {
           $this.removeClass("processing");
@@ -142,11 +144,14 @@ export default function MonaCreateModuleAccount() {
       const result = await sendAjaxPromise(mona_ajax_url.ajaxURL, "post", {
         action: "mona_ajax_upload_post_img",
         data: $file,
+        nonce: mona_ajax_url.nonce,
       });
       $loading.removeClass("processing");
-      let $result = JSON.parse(result);
-      // $('#acc__ava__txt').text($result.messenger);
-      AlertCustom("success", "Update Successful", $result.messenger);
+      const parsedResult =
+        typeof result === "string" ? JSON.parse(result) : result;
+      const payload = parsedResult.data || parsedResult;
+      // $('#acc__ava__txt').text(payload.messenger);
+      AlertCustom("success", "Update Successful", payload.messenger);
       // $("#acc__ava__txt").css("color", "green");
     } catch (e) {
       console.log(e);

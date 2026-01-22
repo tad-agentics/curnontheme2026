@@ -34,7 +34,7 @@ defined('ABSPATH') || exit;
                         <div class="pcart-flex">
                             <div class="pcart-left" data-aos="fade-right">
                                 <div class="pcart-suc">
-                                    <div class="pcart-suc-top"> <span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/icon-suc.svg" alt="" /></span>
+                                    <div class="pcart-suc-top"> <span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/icon-suc.svg" alt="" /></span>
                                         <h1 class="title f-title fw-7 t-center">
                                             <?php _e('ĐẶT HÀNG THÀNH CÔNG', 'monamedia') ?></h1>
                                         <p class="desc fw-5 t-center">

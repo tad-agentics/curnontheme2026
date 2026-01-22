@@ -106,6 +106,7 @@ export default function filterForm() {
                     paged: paged,
                     action_layout: action,
                     action_flag: flag,
+                    nonce: mona_ajax_url.nonce,
                 },
                 error: function(request) {
                     processing.removeClass("processing");
@@ -187,6 +188,7 @@ export default function filterForm() {
                     paged: paged,
                     action_layout: action,
                     action_flag: flag,
+                    nonce: mona_ajax_url.nonce,
                 },
                 error: function(request) {
                     processing.removeClass("processing");

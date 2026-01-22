@@ -41,28 +41,28 @@ if (is_user_logged_in()) {
 
                                     <div class="acc-rank"> <span class="text fw-7">
                                             CURNON + </span><span class="icon">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/kimcuong.svg" alt="" /></span>
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/kimcuong.svg" alt="" /></span>
                                     </div>
 
                                 <?php } elseif ($total_order_amount < 5000000 && $total_order_amount > 2000000) { ?>
 
                                     <div class="acc-rank"> <span class="text fw-7">
                                             CURNON + </span><span class="icon">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/vang.svg" alt="" /></span>
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/vang.svg" alt="" /></span>
                                     </div>
 
                                 <?php } elseif ($total_order_amount < 2000000 && $total_order_amount > 500000) { ?>
 
                                     <div class="acc-rank"> <span class="text fw-7">
                                             CURNON + </span><span class="icon">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/bac.svg" alt="" /></span>
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/bac.svg" alt="" /></span>
                                     </div>
 
                                 <?php } else { ?>
 
                                     <div class="acc-rank"> <span class="text fw-7">
                                             CURNON + </span><span class="icon">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/dong.svg" alt="" /></span>
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/dong.svg" alt="" /></span>
                                     </div>
 
                                 <?php } ?>
@@ -83,7 +83,7 @@ if (is_user_logged_in()) {
                                 <div class="acc-pro-list">
                                     <div class="acc-pro-line" style="width: <?php echo $percent; ?>%; min-width: 1%; max-width: 100%;">
                                         <span class="icon">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/brown.svg" alt="" />
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/brown.svg" alt="" />
                                         </span>
                                     </div>
                                     <div class="acc-pro-item x1">
@@ -91,7 +91,7 @@ if (is_user_logged_in()) {
                                             <span class="text">CURNON +
                                             </span>
                                             <span class="icon">
-                                                <img src="<?php get_site_url(); ?>/template/assets/images/dong.svg" alt="" />
+                                                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/dong.svg" alt="" />
                                             </span>
                                         </div>
                                     </div>
@@ -101,7 +101,7 @@ if (is_user_logged_in()) {
                                                 SILVER
                                             </span>
                                             <span class="icon">
-                                                <img src="<?php get_site_url(); ?>/template/assets/images/bac.svg" alt="" />
+                                                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/bac.svg" alt="" />
                                             </span>
                                         </div>
                                         <div class="acc-pro-desc">
@@ -109,7 +109,7 @@ if (is_user_logged_in()) {
                                                 GOLD
                                             </span>
                                             <span class="icon">
-                                                <img src="<?php get_site_url(); ?>/template/assets/images/vang.svg" alt="" />
+                                                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/vang.svg" alt="" />
                                             </span>
                                         </div>
                                     </div>
@@ -118,7 +118,7 @@ if (is_user_logged_in()) {
                                             <span class="text">
                                                 DIAMOND
                                             </span><span class="icon">
-                                                <img src="<?php get_site_url(); ?>/template/assets/images/kimcuong.svg" alt="" /></span>
+                                                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/kimcuong.svg" alt="" /></span>
                                         </div>
                                     </div>
                                 </div>
@@ -182,7 +182,7 @@ if (is_user_logged_in()) {
                             </p><a class="link" href="https://curnonwatch.monamedia.net/"><?php _e('CONTINUE SHOPPING', 'monamedia') ?></a>
                         </div>
                         <div class="popup-acc-right">
-                            <div class="popup-acc-img"> <img src="<?php get_site_url(); ?>/template/assets/images/dblog-loca.jpg" alt="" />
+                            <div class="popup-acc-img"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/dblog-loca.jpg" alt="" />
                             </div>
                         </div>
                     </div>

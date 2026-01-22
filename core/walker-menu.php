@@ -22,16 +22,17 @@ class Mona_Walker_Nav_Menu extends Walker_Nav_Menu
         $description = $item->description;
         $permalink = $item->url;
 
-        $output .= "<li class='" .  implode(" ", $item->classes) . "'>";
+        $class_names = !empty($item->classes) ? implode(' ', array_map('sanitize_html_class', $item->classes)) : '';
+        $output .= "<li class='" . esc_attr($class_names) . "'>";
 
         //Add SPAN if no Permalink
         if ($permalink && $permalink != '#') {
-            $output .= '<a class="menu-link" href="' . $permalink . '">';
+            $output .= '<a class="menu-link" href="' . esc_url($permalink) . '">';
         } else {
             $output .= '<a class="menu-link" href="javascript:;">';
         }
 
-        $output .= $title;
+        $output .= esc_html($title);
 
         if ($permalink && $permalink != '#') {
             $output .= '</a>';
@@ -75,16 +76,17 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
 
         $mona_select_megamenu = get_field('mona_select_megamenu', $item);
 
-        $output .= "<li class='dropdown " .  implode(" ", $item->classes) . "'>";
+        $class_names = !empty($item->classes) ? implode(' ', array_map('sanitize_html_class', $item->classes)) : '';
+        $output .= "<li class='dropdown " . esc_attr($class_names) . "'>";
 
         //Add SPAN if no Permalink
         if ($permalink && $permalink != '#') {
-            $output .= '<a class="menu-link" href="' . $permalink . '">';
+            $output .= '<a class="menu-link" href="' . esc_url($permalink) . '">';
         } else {
             $output .= '<a class="menu-link" href="javascript:;">';
         }
 
-        $output .= $title;
+        $output .= esc_html($title);
 
         if ($permalink && $permalink != '#') {
             $output .= '</a>';
@@ -139,7 +141,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                     <li class="menu-item">
                                         <!-- actived -->
                                         <a class="menu-link" href="<?php echo esc_url($link_item); ?>">
-                                            <?php echo $item->name; ?>
+                                            <?php echo esc_html($item->name); ?>
                                         </a>
                                     </li>
 
@@ -172,7 +174,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
 
                                                     <?php if ($parent_cat_dong_ho_nam->count > 0) : ?>
                                                         <span class="c-second">
-                                                            <?php echo $parent_cat_dong_ho_nam->count; ?>
+                                                            <?php echo absint($parent_cat_dong_ho_nam->count); ?>
                                                         </span>
                                                         <?php _e(' sản phẩm đồng hồ nam', 'monamedia') ?>
                                                     <?php endif; ?>
@@ -193,7 +195,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                                             <?php echo wp_get_attachment_image($image_product_cat, 'full'); ?>
                                                         </span>
                                                         <span class="mega-dh-name">
-                                                            <?php echo $child_cat->name; ?>
+                                                            <?php echo esc_html($child_cat->name); ?>
                                                         </span>
                                                     </a>
 
@@ -231,7 +233,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                                                 <?php echo wp_get_attachment_image($image_child_cat, 'full'); ?>
                                                             </a>
                                                         </div>
-                                                        <a class="mega-ts-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo $child_cat->name; ?></a>
+                                                        <a class="mega-ts-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo esc_html($child_cat->name); ?></a>
                                                     </div>
 
                                                 <?php } ?>
@@ -260,7 +262,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                                 <p class="t16 fw-5">
                                                     <?php if ($parent_cat_day_dong_ho->count > 0) : ?>
                                                         <span class="c-second">
-                                                            <?php echo $parent_cat_day_dong_ho->count; ?>
+                                                            <?php echo absint($parent_cat_day_dong_ho->count); ?>
                                                         </span>
                                                         <?php _e(' sản phẩm dây đồng hồ nam', 'monamedia') ?>
                                                     <?php endif; ?>
@@ -283,7 +285,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                                                         <?php echo wp_get_attachment_image($image_child_cat, 'full'); ?>
                                                                     </a>
                                                                 </div>
-                                                                <a class="mega-ddh-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo $child_cat->name; ?></a>
+                                                                <a class="mega-ddh-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo esc_html($child_cat->name); ?></a>
                                                             </div>
                                                         </div>
 
@@ -314,10 +316,10 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                             <div class="mega-bs-left">
                                                 <div class="mega-bs-img">
                                                     <div class="box">
-                                                    <a href="<?php echo $link_best_sellers; ?>"><?php echo wp_get_attachment_image($mona_hinh_anh_1_best_sellers, 'full'); ?></a>
+                                                    <a href="<?php echo esc_url($link_best_sellers); ?>"><?php echo wp_get_attachment_image($mona_hinh_anh_1_best_sellers, 'full'); ?></a>
                                                     </div>
                                                     <span class="text">
-                                                        <?php echo $tieu_de_1_best_sellers; ?>
+                                                        <?php echo esc_html($tieu_de_1_best_sellers); ?>
                                                     </span>
                                                 </div>
                                             </div>
@@ -328,7 +330,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                                     </div>
                                                 </div>
                                                 <div class="mega-bs-desc">
-                                                    <span class="text"><?php echo $tieu_de_2_best_sellers; ?></span><a class="mega-bs-link" href="<?php echo $link_2_best_sellers; ?>"><?php _e('SHOP NOW', 'monamedia') ?></a>
+                                                    <span class="text"><?php echo esc_html($tieu_de_2_best_sellers); ?></span><a class="mega-bs-link" href="<?php echo esc_url($link_2_best_sellers); ?>"><?php _e('SHOP NOW', 'monamedia') ?></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -405,7 +407,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                         <div class="container">
                                             <div class="empty-product">
                                                 <a class="image-empty-product" href="<?php echo home_url(); ?>">
-                                                    <img src="<?php get_site_url(); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
+                                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
                                                 </a>
                                                 <p class="text">
                                                     <?php _e('Hiện tại, sản phẩm bạn tìm kiếm hiện đang cập nhật. Vui lòng quay lại sau hoặc liên hệ với chúng tôi.', 'monamedia'); ?>
@@ -463,7 +465,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                     <li class="menu-item">
                                         <!-- actived -->
                                         <a class="menu-link" href="<?php echo esc_url($link_item); ?>">
-                                            <?php echo $item->name; ?>
+                                            <?php echo esc_html($item->name); ?>
                                         </a>
                                     </li>
 
@@ -494,7 +496,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
 
                                                     <?php if ($parent_cat_dong_ho_nu->count > 0) : ?>
                                                         <span class="c-second">
-                                                            <?php echo $parent_cat_dong_ho_nu->count; ?>
+                                                            <?php echo absint($parent_cat_dong_ho_nu->count); ?>
                                                         </span>
                                                         <?php _e(' sản phẩm đồng hồ nữ', 'monamedia') ?>
                                                     <?php endif; ?>
@@ -513,7 +515,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                                             <?php echo wp_get_attachment_image($image_product_cat, 'full'); ?>
                                                         </span>
                                                         <span class="mega-dh-name">
-                                                            <?php echo $child_cat->name; ?>
+                                                            <?php echo esc_html($child_cat->name); ?>
                                                         </span>
                                                     </a>
 
@@ -550,7 +552,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                                                 <?php echo wp_get_attachment_image($image_child_cat, 'full'); ?>
                                                             </a>
                                                         </div>
-                                                        <a class="mega-ts-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo $child_cat->name; ?></a>
+                                                        <a class="mega-ts-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo esc_html($child_cat->name); ?></a>
                                                     </div>
 
                                                 <?php } ?>
@@ -578,7 +580,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                                 <p class="t16 fw-5">
                                                     <?php if ($parent_cat_day_dong_ho_nu->count > 0) : ?>
                                                         <span class="c-second">
-                                                            <?php echo $parent_cat_day_dong_ho_nu->count; ?>
+                                                            <?php echo absint($parent_cat_day_dong_ho_nu->count); ?>
                                                         </span>
                                                         <?php _e(' sản phẩm dây đồng hồ nữ', 'monamedia') ?>
                                                     <?php endif; ?>
@@ -601,7 +603,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                                                         <?php echo wp_get_attachment_image($image_child_cat, 'full'); ?>
                                                                     </a>
                                                                 </div>
-                                                                <a class="mega-ddh-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo $child_cat->name; ?></a>
+                                                                <a class="mega-ddh-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo esc_html($child_cat->name); ?></a>
                                                             </div>
                                                         </div>
 
@@ -632,10 +634,10 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                             <div class="mega-bs-left">
                                                 <div class="mega-bs-img">
                                                     <div class="box">
-                                                    <a href="<?php echo $link_best_sellers; ?>"> <?php echo wp_get_attachment_image($mona_hinh_anh_1_best_sellers, 'full'); ?></a>
+                                                    <a href="<?php echo esc_url($link_best_sellers); ?>"> <?php echo wp_get_attachment_image($mona_hinh_anh_1_best_sellers, 'full'); ?></a>
                                                     </div>
                                                     <span class="text">
-                                                        <?php echo $tieu_de_1_best_sellers; ?>
+                                                        <?php echo esc_html($tieu_de_1_best_sellers); ?>
                                                     </span>
                                                 </div>
                                             </div>
@@ -646,7 +648,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                                     </div>
                                                 </div>
                                                 <div class="mega-bs-desc">
-                                                    <span class="text"><?php echo $tieu_de_2_best_sellers; ?></span><a class="mega-bs-link" href="<?php echo $link_2_best_sellers; ?>"><?php _e('SHOP NOW', 'monamedia') ?></a>
+                                                    <span class="text"><?php echo esc_html($tieu_de_2_best_sellers); ?></span><a class="mega-bs-link" href="<?php echo esc_url($link_2_best_sellers); ?>"><?php _e('SHOP NOW', 'monamedia') ?></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -685,10 +687,10 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                     <div class="mega-new">
                                         <div class="mega-dh-top">
                                             <p class="t16 fw-5">
-                                                <span class="c-second"><?php echo $number; ?>
+                                                <span class="c-second"><?php echo absint($number); ?>
                                                 </span><?php _e('sản phẩm mới nhất', 'monamedia'); ?>
                                             </p>
-                                            <a class="mega-dh-top-link" href="<?php echo site_url('dong-ho'); ?>"><?php _e('SHOP ALL', 'monamedia'); ?></a>
+                                            <a class="mega-dh-top-link" href="<?php echo esc_url(site_url('dong-ho')); ?>"><?php _e('SHOP ALL', 'monamedia'); ?></a>
                                         </div>
 
                                         <div class="swiper megaNewSwiper">
@@ -725,7 +727,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                         <div class="container">
                                             <div class="empty-product">
                                                 <a class="image-empty-product" href="<?php echo home_url(); ?>">
-                                                    <img src="<?php get_site_url(); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
+                                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
                                                 </a>
                                                 <p class="text">
                                                     <?php _e('Hiện tại, sản phẩm bạn tìm kiếm hiện đang cập nhật. Vui lòng quay lại sau hoặc liên hệ với chúng tôi.', 'monamedia'); ?>
@@ -778,7 +780,7 @@ class Mona_Walker_Nav_Menu_Frimary extends Walker_Nav_Menu
                                     <a class="mega-qt-img" href="<?php echo esc_url($link_item); ?>">
                                         <?php echo wp_get_attachment_image($image_product_cat, 'full'); ?>
                                     </a>
-                                    <a class="mega-qt-name fw-5"><?php echo $item->name; ?></a>
+                                    <a class="mega-qt-name fw-5"><?php echo esc_html($item->name); ?></a>
                                 </div>
                             </div>
 
@@ -820,16 +822,17 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
 
         $mona_select_megamenu = get_field('mona_select_megamenu', $item);
 
-        $output .= "<li class='dropdown " .  implode(" ", $item->classes) . "'>";
+        $class_names = !empty($item->classes) ? implode(' ', array_map('sanitize_html_class', $item->classes)) : '';
+        $output .= "<li class='dropdown " . esc_attr($class_names) . "'>";
 
         //Add SPAN if no Permalink
         if ($permalink && $permalink != '#') {
-            $output .= '<a class="menu-link" href="' . $permalink . '">';
+            $output .= '<a class="menu-link" href="' . esc_url($permalink) . '">';
         } else {
             $output .= '<a class="menu-link" href="javascript:;">';
         }
 
-        $output .= $title;
+        $output .= esc_html($title);
 
         if ($permalink && $permalink != '#') {
             $output .= '</a>';
@@ -876,14 +879,14 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                 <div class="mobile-sub-item">
                     <div class="mobile-sub-item-top tech-item-head"><span class="text">ĐỒNG HỒ NAM</span><a class="mobile-sub-link">SHOP ALL</a></div>
                     <div class="mobile-sub-main tech-body">
-                        <div class="mega-dh-list"> <a class="mega-dh-item"> <span class="mega-dh-img"> <img src="<?php get_site_url(); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
-                                    <img src="<?php get_site_url(); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
-                                    <img src="<?php get_site_url(); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
-                                    <img src="<?php get_site_url(); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
-                                    <img src="<?php get_site_url(); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
-                                    <img src="<?php get_site_url(); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
-                                    <img src="<?php get_site_url(); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
-                                    <img src="<?php get_site_url(); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a>
+                        <div class="mega-dh-list"> <a class="mega-dh-item"> <span class="mega-dh-img"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
+                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
+                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
+                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
+                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
+                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
+                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a><a class="mega-dh-item"> <span class="mega-dh-img">
+                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/megadh.png" alt="" /></span><span class="mega-dh-name">KASHMIR</span></a>
                         </div>
                     </div>
                 </div>
@@ -893,16 +896,16 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                     <div class="mobile-sub-main tech-body">
                         <div class="mega-ts-list">
                             <div class="mega-ts-item">
-                                <div class="mega-ts-img"> <a class="box"><img src="<?php get_site_url(); ?>/template/assets/images/ts1.jpg" alt="" /></a></div><a class="mega-ts-name">VÒNG TAY</a>
+                                <div class="mega-ts-img"> <a class="box"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/ts1.jpg" alt="" /></a></div><a class="mega-ts-name">VÒNG TAY</a>
                             </div>
                             <div class="mega-ts-item">
-                                <div class="mega-ts-img"> <a class="box"><img src="<?php get_site_url(); ?>/template/assets/images/ts2.jpg" alt="" /></a></div><a class="mega-ts-name">DÂY CHUYỀN</a>
+                                <div class="mega-ts-img"> <a class="box"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/ts2.jpg" alt="" /></a></div><a class="mega-ts-name">DÂY CHUYỀN</a>
                             </div>
                             <div class="mega-ts-item">
-                                <div class="mega-ts-img"> <a class="box"><img src="<?php get_site_url(); ?>/template/assets/images/ts3.jpg" alt="" /></a></div><a class="mega-ts-name">NHẪN</a>
+                                <div class="mega-ts-img"> <a class="box"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/ts3.jpg" alt="" /></a></div><a class="mega-ts-name">NHẪN</a>
                             </div>
                             <div class="mega-ts-item">
-                                <div class="mega-ts-img"> <a class="box"><img src="<?php get_site_url(); ?>/template/assets/images/ts4.jpg" alt="" /></a></div><a class="mega-ts-name">BÔNG TAI</a>
+                                <div class="mega-ts-img"> <a class="box"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/ts4.jpg" alt="" /></a></div><a class="mega-ts-name">BÔNG TAI</a>
                             </div>
                         </div>
                     </div>
@@ -914,32 +917,32 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">
                                     <div class="mega-ddh-item">
-                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php get_site_url(); ?>/template/assets/images/ddh (1).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
+                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/ddh (1).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="mega-ddh-item">
-                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php get_site_url(); ?>/template/assets/images/ddh (2).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
+                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/ddh (2).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="mega-ddh-item">
-                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php get_site_url(); ?>/template/assets/images/ddh (3).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
+                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/ddh (3).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="mega-ddh-item">
-                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php get_site_url(); ?>/template/assets/images/ddh (4).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
+                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/ddh (4).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="mega-ddh-item">
-                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php get_site_url(); ?>/template/assets/images/ddh (5).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
+                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/ddh (5).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
                                     </div>
                                 </div>
                                 <div class="swiper-slide">
                                     <div class="mega-ddh-item">
-                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php get_site_url(); ?>/template/assets/images/ddh (6).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
+                                        <div class="mega-ddh-img"> <a class="box"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/ddh (6).png" alt="" /></a></div><a class="mega-ddh-name">DÂY VẢI</a>
                                     </div>
                                 </div>
                             </div>
@@ -952,13 +955,13 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                         <div class="mega-bs-flex">
                             <div class="mega-bs-left">
                                 <div class="mega-bs-img">
-                                    <div class="box"> <img src="<?php get_site_url(); ?>/template/assets/images/bs1.jpg" alt="" />
+                                    <div class="box"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/bs1.jpg" alt="" />
                                     </div><span class="text">Best sellers</span>
                                 </div>
                             </div>
                             <div class="mega-bs-right">
                                 <div class="mega-bs-simg">
-                                    <div class="box"> <img src="<?php get_site_url(); ?>/template/assets/images/bs2.jpg" alt="" />
+                                    <div class="box"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/bs2.jpg" alt="" />
                                     </div>
                                 </div>
                                 <div class="mega-bs-desc"> <span class="text">Tổng hợp các sản phẩm bán chạy
@@ -976,20 +979,20 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                     <div class="pro-item">
                                         <div class="pro-box">
                                             <div class="pro-img">
-                                                <div class="box box-pc"><img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
-                                                <div class="box box-pc"><img src="<?php get_site_url(); ?>/template/assets/images/pro2.jpg " alt="" /></div>
+                                                <div class="box box-pc"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                <div class="box box-pc"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro2.jpg " alt="" /></div>
                                                 <div class="swiper proSwiper">
                                                     <div class="swiper-wrapper">
                                                         <div class="swiper-slide">
-                                                            <div class="box"> <img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                            <div class="box"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
                                                         </div>
                                                         <div class="swiper-slide">
-                                                            <div class="box"> <img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                            <div class="box"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
                                                         </div>
                                                     </div>
                                                     <div class="swiper-pagination"></div>
                                                 </div><a class="pro-add pro-add-pc popup-open" data-popup="popup-attri"><span class="text">Thêm vào giỏ
-                                                        hàng</span><span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span></a><span class="pro-tag">
+                                                        hàng</span><span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span></a><span class="pro-tag">
                                                     -11%</span>
                                             </div>
                                             <div class="pro-desc"> <a class="pro-name" href="">GALLANT</a>
@@ -1000,22 +1003,22 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                                         <div class="recheck-block">
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img1.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img1.png" alt="" />
                                                                 </div>
                                                             </div>
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img2.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img2.png" alt="" />
                                                                 </div>
                                                             </div>
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img3.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img3.png" alt="" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><a class="pro-add pro-add-mb popup-open" data-popup="popup-attri"><span class="text">Thêm</span><span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span></a>
+                                                </div><a class="pro-add pro-add-mb popup-open" data-popup="popup-attri"><span class="text">Thêm</span><span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -1024,20 +1027,20 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                     <div class="pro-item">
                                         <div class="pro-box">
                                             <div class="pro-img">
-                                                <div class="box box-pc"><img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
-                                                <div class="box box-pc"><img src="<?php get_site_url(); ?>/template/assets/images/pro2.jpg " alt="" /></div>
+                                                <div class="box box-pc"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                <div class="box box-pc"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro2.jpg " alt="" /></div>
                                                 <div class="swiper proSwiper">
                                                     <div class="swiper-wrapper">
                                                         <div class="swiper-slide">
-                                                            <div class="box"> <img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                            <div class="box"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
                                                         </div>
                                                         <div class="swiper-slide">
-                                                            <div class="box"> <img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                            <div class="box"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
                                                         </div>
                                                     </div>
                                                     <div class="swiper-pagination"></div>
                                                 </div><a class="pro-add pro-add-pc popup-open" data-popup="popup-attri"><span class="text">Thêm vào giỏ
-                                                        hàng</span><span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span></a><span class="pro-tag">
+                                                        hàng</span><span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span></a><span class="pro-tag">
                                                     -11%</span>
                                             </div>
                                             <div class="pro-desc"> <a class="pro-name" href="">GALLANT</a>
@@ -1048,22 +1051,22 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                                         <div class="recheck-block">
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img1.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img1.png" alt="" />
                                                                 </div>
                                                             </div>
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img2.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img2.png" alt="" />
                                                                 </div>
                                                             </div>
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img3.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img3.png" alt="" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><a class="pro-add pro-add-mb popup-open" data-popup="popup-attri"><span class="text">Thêm</span><span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span></a>
+                                                </div><a class="pro-add pro-add-mb popup-open" data-popup="popup-attri"><span class="text">Thêm</span><span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -1072,20 +1075,20 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                     <div class="pro-item">
                                         <div class="pro-box">
                                             <div class="pro-img">
-                                                <div class="box box-pc"><img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
-                                                <div class="box box-pc"><img src="<?php get_site_url(); ?>/template/assets/images/pro2.jpg " alt="" /></div>
+                                                <div class="box box-pc"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                <div class="box box-pc"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro2.jpg " alt="" /></div>
                                                 <div class="swiper proSwiper">
                                                     <div class="swiper-wrapper">
                                                         <div class="swiper-slide">
-                                                            <div class="box"> <img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                            <div class="box"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
                                                         </div>
                                                         <div class="swiper-slide">
-                                                            <div class="box"> <img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                            <div class="box"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
                                                         </div>
                                                     </div>
                                                     <div class="swiper-pagination"></div>
                                                 </div><a class="pro-add pro-add-pc popup-open" data-popup="popup-attri"><span class="text">Thêm vào giỏ
-                                                        hàng</span><span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span></a><span class="pro-tag">
+                                                        hàng</span><span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span></a><span class="pro-tag">
                                                     -11%</span>
                                             </div>
                                             <div class="pro-desc"> <a class="pro-name" href="">GALLANT</a>
@@ -1096,22 +1099,22 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                                         <div class="recheck-block">
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img1.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img1.png" alt="" />
                                                                 </div>
                                                             </div>
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img2.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img2.png" alt="" />
                                                                 </div>
                                                             </div>
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img3.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img3.png" alt="" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><a class="pro-add pro-add-mb popup-open" data-popup="popup-attri"><span class="text">Thêm</span><span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span></a>
+                                                </div><a class="pro-add pro-add-mb popup-open" data-popup="popup-attri"><span class="text">Thêm</span><span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -1120,20 +1123,20 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                     <div class="pro-item">
                                         <div class="pro-box">
                                             <div class="pro-img">
-                                                <div class="box box-pc"><img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
-                                                <div class="box box-pc"><img src="<?php get_site_url(); ?>/template/assets/images/pro2.jpg " alt="" /></div>
+                                                <div class="box box-pc"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                <div class="box box-pc"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro2.jpg " alt="" /></div>
                                                 <div class="swiper proSwiper">
                                                     <div class="swiper-wrapper">
                                                         <div class="swiper-slide">
-                                                            <div class="box"> <img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                            <div class="box"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
                                                         </div>
                                                         <div class="swiper-slide">
-                                                            <div class="box"> <img src="<?php get_site_url(); ?>/template/assets/images/pro1.jpg " alt="" /></div>
+                                                            <div class="box"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro1.jpg " alt="" /></div>
                                                         </div>
                                                     </div>
                                                     <div class="swiper-pagination"></div>
                                                 </div><a class="pro-add pro-add-pc popup-open" data-popup="popup-attri"><span class="text">Thêm vào giỏ
-                                                        hàng</span><span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span></a><span class="pro-tag">
+                                                        hàng</span><span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span></a><span class="pro-tag">
                                                     -11%</span>
                                             </div>
                                             <div class="pro-desc"> <a class="pro-name" href="">GALLANT</a>
@@ -1144,22 +1147,22 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                                         <div class="recheck-block">
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img1.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img1.png" alt="" />
                                                                 </div>
                                                             </div>
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img2.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img2.png" alt="" />
                                                                 </div>
                                                             </div>
                                                             <div class="recheck-item">
                                                                 <input class="recheck-input" type="radio" name="" hidden="" />
-                                                                <div class="recheck-checkbox"><img src="<?php get_site_url(); ?>/template/assets/images/img3.png" alt="" />
+                                                                <div class="recheck-checkbox"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/img3.png" alt="" />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div><a class="pro-add pro-add-mb popup-open" data-popup="popup-attri"><span class="text">Thêm</span><span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span></a>
+                                                </div><a class="pro-add pro-add-mb popup-open" data-popup="popup-attri"><span class="text">Thêm</span><span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -1203,7 +1206,7 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                     <li class="menu-item">
                                         <!-- actived -->
                                         <a class="menu-link" href="<?php echo esc_url($link_item); ?>">
-                                            <?php echo $item->name; ?>
+                                            <?php echo esc_html($item->name); ?>
                                         </a>
                                     </li>
 
@@ -1236,7 +1239,7 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
 
                                                     <?php if ($parent_cat_dong_ho_nu->count > 0) : ?>
                                                         <span class="c-second">
-                                                            <?php echo $parent_cat_dong_ho_nu->count; ?>
+                                                            <?php echo absint($parent_cat_dong_ho_nu->count); ?>
                                                         </span>
                                                         <?php _e(' sản phẩm đồng hồ nữ', 'monamedia') ?>
                                                     <?php endif; ?>
@@ -1255,7 +1258,7 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                                             <?php echo wp_get_attachment_image($image_product_cat, 'full'); ?>
                                                         </span>
                                                         <span class="mega-dh-name">
-                                                            <?php echo $child_cat->name; ?>
+                                                            <?php echo esc_html($child_cat->name); ?>
                                                         </span>
                                                     </a>
 
@@ -1292,7 +1295,7 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                                                 <?php echo wp_get_attachment_image($image_child_cat, 'full'); ?>
                                                             </a>
                                                         </div>
-                                                        <a class="mega-ts-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo $child_cat->name; ?></a>
+                                                        <a class="mega-ts-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo esc_html($child_cat->name); ?></a>
                                                     </div>
 
                                                 <?php } ?>
@@ -1320,7 +1323,7 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                                 <p class="t16 fw-5">
                                                     <?php if ($parent_cat_day_dong_ho_nu->count > 0) : ?>
                                                         <span class="c-second">
-                                                            <?php echo $parent_cat_day_dong_ho_nu->count; ?>
+                                                            <?php echo absint($parent_cat_day_dong_ho_nu->count); ?>
                                                         </span>
                                                         <?php _e(' sản phẩm đồng hồ nữ', 'monamedia') ?>
                                                     <?php endif; ?>
@@ -1343,7 +1346,7 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                                                         <?php echo wp_get_attachment_image($image_child_cat, 'full'); ?>
                                                                     </a>
                                                                 </div>
-                                                                <a class="mega-ddh-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo $child_cat->name; ?></a>
+                                                                <a class="mega-ddh-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo esc_html($child_cat->name); ?></a>
                                                             </div>
                                                         </div>
 
@@ -1373,10 +1376,10 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                             <div class="mega-bs-left">
                                                 <div class="mega-bs-img">
                                                     <div class="box">
-                                                    <a href="<?php echo $link_best_sellers; ?>"><?php echo wp_get_attachment_image($mona_hinh_anh_1_best_sellers, 'full'); ?></a>
+                                                    <a href="<?php echo esc_url($link_best_sellers); ?>"><?php echo wp_get_attachment_image($mona_hinh_anh_1_best_sellers, 'full'); ?></a>
                                                     </div>
                                                     <span class="text">
-                                                        <?php echo $tieu_de_1_best_sellers; ?>
+                                                        <?php echo esc_html($tieu_de_1_best_sellers); ?>
                                                     </span>
                                                 </div>
                                             </div>
@@ -1387,7 +1390,7 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                                     </div>
                                                 </div>
                                                 <div class="mega-bs-desc">
-                                                    <span class="text"><?php echo $tieu_de_2_best_sellers; ?></span><a class="mega-bs-link" href="<?php echo $link_2_best_sellers; ?>"><?php _e('SHOP NOW', 'monamedia') ?></a>
+                                                    <span class="text"><?php echo esc_html($tieu_de_2_best_sellers); ?></span><a class="mega-bs-link" href="<?php echo esc_url($link_2_best_sellers); ?>"><?php _e('SHOP NOW', 'monamedia') ?></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -1461,7 +1464,7 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                         <div class="container">
                                             <div class="empty-product">
                                                 <a class="image-empty-product" href="<?php echo home_url(); ?>">
-                                                    <img src="<?php get_site_url(); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
+                                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
                                                 </a>
                                                 <p class="text">
                                                     <?php _e('Hiện tại, sản phẩm bạn tìm kiếm hiện đang cập nhật. Vui lòng quay lại sau hoặc liên hệ với chúng tôi.', 'monamedia'); ?>
@@ -1514,7 +1517,7 @@ class Mona_Walker_Nav_Menu_Mobile extends Walker_Nav_Menu
                                     <a class="mega-qt-img" href="<?php echo esc_url($link_item); ?>">
                                         <?php echo wp_get_attachment_image($image_product_cat, 'full'); ?>
                                     </a>
-                                    <a class="mega-qt-name fw-5"><?php echo $item->name; ?></a>
+                                    <a class="mega-qt-name fw-5"><?php echo esc_html($item->name); ?></a>
                                 </div>
                             </div>
 

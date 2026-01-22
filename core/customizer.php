@@ -390,6 +390,71 @@ if (class_exists('Kirki')) {
             ],
         ]
     ]);
+
+    /**
+     * Theme pages (login/register/forgot/about)
+     */
+    Kirki::add_section(
+        'section_theme_pages',
+        [
+            'title'      => __('Theme Pages', 'mona-admin'),
+            'priority'   => $priority++,
+            'capability' => 'edit_theme_options',
+            'panel'      => 'panel_site',
+        ]
+    );
+
+    Kirki::add_field(
+        'mona_setting',
+        [
+            'type'        => 'dropdown-pages',
+            'settings'    => 'mona_login_page_id',
+            'label'       => __('Login Page', 'mona-admin'),
+            'section'     => 'section_theme_pages',
+            'default'     => 53,
+            'priority'    => $priority++,
+            'sanitize_callback' => 'absint',
+        ]
+    );
+
+    Kirki::add_field(
+        'mona_setting',
+        [
+            'type'        => 'dropdown-pages',
+            'settings'    => 'mona_register_page_id',
+            'label'       => __('Register Page', 'mona-admin'),
+            'section'     => 'section_theme_pages',
+            'default'     => 55,
+            'priority'    => $priority++,
+            'sanitize_callback' => 'absint',
+        ]
+    );
+
+    Kirki::add_field(
+        'mona_setting',
+        [
+            'type'        => 'dropdown-pages',
+            'settings'    => 'mona_forgot_page_id',
+            'label'       => __('Forgot Password Page', 'mona-admin'),
+            'section'     => 'section_theme_pages',
+            'default'     => 57,
+            'priority'    => $priority++,
+            'sanitize_callback' => 'absint',
+        ]
+    );
+
+    Kirki::add_field(
+        'mona_setting',
+        [
+            'type'        => 'dropdown-pages',
+            'settings'    => 'mona_about_page_id',
+            'label'       => __('About Page', 'mona-admin'),
+            'section'     => 'section_theme_pages',
+            'default'     => 86,
+            'priority'    => $priority++,
+            'sanitize_callback' => 'absint',
+        ]
+    );
     /**
      * Add field 
      */

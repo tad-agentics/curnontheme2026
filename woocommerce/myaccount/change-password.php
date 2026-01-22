@@ -1,5 +1,6 @@
 <div class="changepass form-doimatkhau">
     <form action="" id="f-change-password" class="is-loading-group">
+        <?php wp_nonce_field('mona_ajax_nonce', 'mona_nonce'); ?>
         <div class="form-list row">
             <div class="form-ip col"> <span class="text"><?php _e('Old password', 'monamedia'); ?></span>
                 <div class="input">

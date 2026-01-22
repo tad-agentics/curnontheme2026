@@ -59,7 +59,7 @@ if (!empty($rp_product)) {
                 <?php if (!empty($item['rp']) && is_array($item['rp'])) : ?>
 		    <?php foreach ($item['rp'] as $key => $item_childe) : ?>
                         <span class="box box-pc">
-                            <a href="<?php echo $link; ?>"><?php echo wp_get_attachment_image($item_childe['image'], 'full') ?></a>
+                            <a href="<?php echo esc_url($link); ?>"><?php echo wp_get_attachment_image($item_childe['image'], 'full'); ?></a>
                         </span>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -69,7 +69,7 @@ if (!empty($rp_product)) {
 			    <?php foreach ($item['rp'] as $key => $item_childe) : ?>
                                 <div class="swiper-slide">
                                     <span class="box">
-                                        <a href="<?php echo $link; ?>"><?php echo wp_get_attachment_image($item_childe['image'], 'full') ?></a>
+                                        <a href="<?php echo esc_url($link); ?>"><?php echo wp_get_attachment_image($item_childe['image'], 'full'); ?></a>
                                     </span>
                                 </div>
                             <?php endforeach; ?>
@@ -79,35 +79,35 @@ if (!empty($rp_product)) {
                 </div>
                 <!-- add product  -->
                 <?php if ($product->is_type('variable')) { ?>
-                    <a class="pro-add pro-add-pc popup-open popup-product-attr" data-product="<?php echo $product_id ?>" data-popup="popup-attri" id="popup-attri">
+                    <a class="pro-add pro-add-pc popup-open popup-product-attr" data-product="<?php echo absint($product_id); ?>" data-popup="popup-attri" id="popup-attri">
                         <span class="text is-loading-group-mobile">
                             <?php _e('Thêm vào giỏ hàng', 'monamedia'); ?>
                         </span>
                         <span class="icon">
-                            <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" />
                         </span>
                     </a>
                 <?php } else { ?>
-                    <div class="pro-add pro-add-pc m-add-to-cart-flash" data-product-id="<?php echo $product_id; ?>">
+                    <div class="pro-add pro-add-pc m-add-to-cart-flash" data-product-id="<?php echo absint($product_id); ?>">
                         <span class="text is-loading-group">
                             <?php _e('Thêm vào giỏ hàng', 'monamedia'); ?>
                         </span>
                         <span class="icon">
-                            <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" />
                         </span>
                     </div>
                 <?php } ?>
                 <?php if ($percent_sale) : ?>
                     <span class="pro-tag">
-                        <?php echo $percent_sale; ?>
+                        <?php echo esc_html($percent_sale); ?>
                     </span>
                 <?php endif; ?>
             </div>
         <?php endforeach; ?>
         <div class="pro-desc">
-            <a class="pro-name" href="<?php echo $link; ?>"><?php echo $title; ?></a>
+            <a class="pro-name" href="<?php echo esc_url($link); ?>"><?php echo esc_html($title); ?></a>
             <div class="pro-price">
-                <?php echo $price_html; ?>
+                <?php echo wp_kses_post($price_html); ?>
             </div>
             <div class="pro-desc-op">
                 <div class="recheck">
@@ -128,16 +128,16 @@ if (!empty($rp_product)) {
 
             <!-- add product mobile  -->
             <?php if ($product->is_type('variable')) { ?>
-                <div class="pro-add pro-add-mb popup-open popup-product-attr" data-product="<?php echo $product_id ?>" data-popup="popup-attri" id="popup-attri">
+                <div class="pro-add pro-add-mb popup-open popup-product-attr" data-product="<?php echo absint($product_id); ?>" data-popup="popup-attri" id="popup-attri">
                     <span class="text is-loading-group-mobile"> <?php _e('Thêm', 'monamedia'); ?></span>
                     <span class="icon">
-                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span>
+                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span>
                 </div>
             <?php } else { ?>
-                <a class="pro-add pro-add-mb m-add-to-cart-flash" data-product-id="<?php echo $product_id; ?>">
+                <a class="pro-add pro-add-mb m-add-to-cart-flash" data-product-id="<?php echo absint($product_id); ?>">
                     <span class="text is-loading-group"> <?php _e('Thêm', 'monamedia'); ?></span>
                     <span class="icon">
-                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span>
+                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span>
                 </a>
             <?php } ?>
 
@@ -150,21 +150,21 @@ if (!empty($rp_product)) {
     <div class="pro-box">
         <div class="pro-img pro-slider-js">
             <div class="box box-pc">
-                <a href="<?php echo $link; ?>"><?php echo $thumbnail; ?></a>
+                <a href="<?php echo esc_url($link); ?>"><?php echo wp_kses_post($thumbnail); ?></a>
             </div>
             <div class="box box-pc">
-                <a href="<?php echo $link; ?>"><?php echo wp_get_attachment_image(get_field('mona_hinh_anh_nguoi_mau', $product_id), 'full') ?></a>
+                <a href="<?php echo esc_url($link); ?>"><?php echo wp_get_attachment_image(get_field('mona_hinh_anh_nguoi_mau', $product_id), 'full'); ?></a>
             </div>
             <div class="swiper proSwiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="box">
-                            <a href="<?php echo $link; ?>"><?php echo $thumbnail; ?></a>
+                            <a href="<?php echo esc_url($link); ?>"><?php echo wp_kses_post($thumbnail); ?></a>
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="box">
-                            <a href="<?php echo $link; ?>"><?php echo wp_get_attachment_image(get_field('mona_hinh_anh_nguoi_mau', $product_id), 'full') ?></a>
+                            <a href="<?php echo esc_url($link); ?>"><?php echo wp_get_attachment_image(get_field('mona_hinh_anh_nguoi_mau', $product_id), 'full'); ?></a>
                         </div>
                     </div>
                 </div>
@@ -173,25 +173,25 @@ if (!empty($rp_product)) {
 
             <!-- add product  -->
             <?php if ($product->is_type('variable')) { ?>
-                <a class="pro-add pro-add-pc popup-open popup-product-attr" data-product="<?php echo $product_id ?>" data-popup="popup-attri" id="popup-attri">
+                <a class="pro-add pro-add-pc popup-open popup-product-attr" data-product="<?php echo absint($product_id); ?>" data-popup="popup-attri" id="popup-attri">
 
                     <span class="text is-loading-group-mobile">
                         <?php _e('Thêm vào giỏ hàng', 'monamedia'); ?>
                     </span>
                     <span class="icon">
-                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" />
                     </span>
                 </a>
 
             <?php } else { ?>
 
-                <div class="pro-add pro-add-pc m-add-to-cart-flash" data-product-id="<?php echo $product_id; ?>">
+                <div class="pro-add pro-add-pc m-add-to-cart-flash" data-product-id="<?php echo absint($product_id); ?>">
 
                     <span class="text is-loading-group">
                         <?php _e('Thêm vào giỏ hàng', 'monamedia'); ?>
                     </span>
                     <span class="icon">
-                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" />
                     </span>
 
                 </div>
@@ -200,34 +200,34 @@ if (!empty($rp_product)) {
 
             <?php if ($percent_sale) : ?>
                 <span class="pro-tag">
-                    <?php echo $percent_sale; ?>
+                    <?php echo esc_html($percent_sale); ?>
                 </span>
             <?php endif; ?>
         </div>
 
         <div class="pro-desc">
-            <a class="pro-name" href="<?php echo $link; ?>"><?php echo $title; ?></a>
+            <a class="pro-name" href="<?php echo esc_url($link); ?>"><?php echo esc_html($title); ?></a>
             <div class="pro-price">
-                <?php echo $price_html; ?>
+                <?php echo wp_kses_post($price_html); ?>
             </div>
 
             <!-- add product mobile  -->
             <?php if ($product->is_type('variable')) { ?>
 
-                <div class="pro-add pro-add-mb popup-open popup-product-attr" data-product="<?php echo $product_id ?>" data-popup="popup-attri" id="popup-attri">
+                <div class="pro-add pro-add-mb popup-open popup-product-attr" data-product="<?php echo absint($product_id); ?>" data-popup="popup-attri" id="popup-attri">
 
                     <span class="text is-loading-group-mobile"> <?php _e('Thêm', 'monamedia'); ?></span>
                     <span class="icon">
-                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span>
+                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span>
 
                 </div>
 
             <?php } else { ?>
 
-                <a class="pro-add pro-add-mb m-add-to-cart-flash" data-product-id="<?php echo $product_id; ?>">
+                <a class="pro-add pro-add-mb m-add-to-cart-flash" data-product-id="<?php echo absint($product_id); ?>">
                     <span class="text is-loading-group"> <?php _e('Thêm', 'monamedia'); ?></span>
                     <span class="icon">
-                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span>
+                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" /></span>
                 </a>
 
             <?php } ?>

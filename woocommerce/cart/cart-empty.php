@@ -27,7 +27,7 @@ if (wc_get_page_id('shop') > 0) : ?>
     <div class="container">
         <div class="empty-product">
             <a class="image-empty-product" href="<?php echo get_permalink(MONA_WC_PRODUCTS); ?>">
-                <img src="<?php get_site_url(); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
+                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
             </a>
             <p class="text">
                 <?php _e('Hiện tại, sản phẩm bạn tìm kiếm hiện đang cập nhật. Vui lòng quay lại sau hoặc liên hệ với chúng tôi.', 'monamedia'); ?>

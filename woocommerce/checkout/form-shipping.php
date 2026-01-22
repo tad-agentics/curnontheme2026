@@ -71,9 +71,9 @@ defined('ABSPATH') || exit;
 
 
     <div class="pcart-form-bot">
-        <div class="pcart-form-bot-item"> <span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/poli3.svg" alt="" /></span><span class="text">BẢO HÀNH trong 10 năm</span>
+        <div class="pcart-form-bot-item"> <span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/poli3.svg" alt="" /></span><span class="text">BẢO HÀNH trong 10 năm</span>
         </div>
-        <div class="pcart-form-bot-item"> <span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/poli1.svg" alt="" /></span><span class="text">ĐỔI TRẢ MIỄN PHÍ trong 3
+        <div class="pcart-form-bot-item"> <span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/poli1.svg" alt="" /></span><span class="text">ĐỔI TRẢ MIỄN PHÍ trong 3
                 ngày</span></div>
     </div>
 </div>
@@ -116,6 +116,6 @@ defined('ABSPATH') || exit;
                                             </select>
                                         </div>
                                         <div class="ip-control gc">
-                                            <input placeholder="Ghi chú thêm (Ví dụ: Giao giờ hành chính)" type="text"><span class="icon-abs"><img src="<?php get_site_url(); ?>/template/assets/images/icon-ghichu.svg" alt="" /></span>
+                                            <input placeholder="Ghi chú thêm (Ví dụ: Giao giờ hành chính)" type="text"><span class="icon-abs"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/icon-ghichu.svg" alt="" /></span>
                                         </div>
                                     </div> -->

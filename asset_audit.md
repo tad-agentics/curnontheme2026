@@ -1,0 +1,76 @@
+# Asset Audit
+
+## Summary
+- Referenced image filenames: 55
+- Images found in theme: 12
+- Missing from theme: 54
+
+## Missing Image Filenames (not in public/helpers/images)
+- Star-fill.svg
+- Star.svg
+- bac.svg
+- bdban-img-mb.jpg
+- bdban-img.jpg
+- brown.svg
+- bs1.jpg
+- bs2.jpg
+- cart.svg
+- close.png
+- cod.png
+- dblog-loca.jpg
+- ddh (1).png
+- ddh (2).png
+- ddh (3).png
+- ddh (4).png
+- ddh (5).png
+- ddh (6).png
+- dong.svg
+- empty-cart-curnon.png
+- empty-cart.png
+- empty-evaluate.png
+- fb.svg
+- filter-icon.png
+- fundiin.png
+- hamburger.svg
+- heart.svg
+- icon-ghichu.svg
+- icon-heart.svg
+- icon-suc.svg
+- icon-tag.svg
+- img1.png
+- img2.png
+- img3.png
+- kimcuong.svg
+- location.svg
+- megadh.png
+- momo.png
+- pattern.png
+- poli1.svg
+- poli3.svg
+- pro-cart.png
+- pro1.jpg
+- pro2.jpg
+- search.svg
+- ts1.jpg
+- ts2.jpg
+- ts3.jpg
+- ts4.jpg
+- twitter.svg
+- user.svg
+- vang.svg
+- vnpay.png
+- wishlist.png
+
+## Images Present in public/helpers/images
+- cart-empty.png
+- cart-empty.png.webp
+- cube-loading.svg
+- default-mona.png
+- default-mona.png.webp
+- ic-admin-logout.svg
+- ic-admin-user.svg
+- icon-fav.svg
+- icon-loading-ring.svg
+- loader-2.svg
+- loader.svg
+- loading_see_more.svg

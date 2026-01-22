@@ -14,7 +14,7 @@
 
                                     <?php $mona_footer_icon = mona_get_option('mona_footer_icon');
                                         if ($mona_footer_icon) { ?>
-                                    <img src="<?php echo $mona_footer_icon; ?>">
+                                    <img src="<?php echo esc_url($mona_footer_icon); ?>">
                                     <?php } ?>
 
                                 </span>
@@ -23,7 +23,7 @@
                                     <?php
                                         $footer_title_1 = mona_get_option('footer_title_1');
                                         if (isset($footer_title_1) || !empty($footer_title_1)) {
-                                            echo $footer_title_1;
+                                            echo esc_html($footer_title_1);
                                         }
                                         ?>
 
@@ -33,7 +33,7 @@
                             <?php foreach ($dia_chi_items_1 as $item) { ?>
 
                             <a class="footer-info-link"
-                                href="<?php echo esc_url($item['link']); ?>"><?php echo $item['content']; ?></a>
+                                href="<?php echo esc_url($item['link']); ?>"><?php echo esc_html($item['content']); ?></a>
                             <?php } ?>
 
                         </div>
@@ -48,14 +48,14 @@
                                 <span class="icon">
                                     <?php $mona_footer_icon = mona_get_option('mona_footer_icon');
                                         if ($mona_footer_icon) { ?>
-                                    <img src="<?php echo $mona_footer_icon; ?>">
+                                    <img src="<?php echo esc_url($mona_footer_icon); ?>">
                                     <?php } ?>
                                 </span>
                                 <span class="text">
                                     <?php
                                         $footer_title_2 = mona_get_option('footer_title_2');
                                         if (isset($footer_title_2) || !empty($footer_title_2)) {
-                                            echo $footer_title_2;
+                                            echo esc_html($footer_title_2);
                                         }
                                         ?>
                                 </span>
@@ -64,7 +64,7 @@
                             <?php foreach ($dia_chi_items_2 as $item) { ?>
 
                             <a class="footer-info-link"
-                                href="<?php echo esc_url($item['link']); ?>"><?php echo $item['content']; ?></a>
+                                href="<?php echo esc_url($item['link']); ?>"><?php echo esc_html($item['content']); ?></a>
 
                             <?php } ?>
 
@@ -78,7 +78,7 @@
                             <?php
                             $footer_title_3 = mona_get_option('footer_title_3');
                             if (isset($footer_title_3) || !empty($footer_title_3)) {
-                                echo $footer_title_3;
+                                echo esc_html($footer_title_3);
                             }
                             ?>
                         </div>
@@ -100,7 +100,7 @@
                             <?php
                             $footer_title_4 = mona_get_option('footer_title_4');
                             if (isset($footer_title_4) || !empty($footer_title_4)) {
-                                echo $footer_title_4;
+                                echo esc_html($footer_title_4);
                             }
                             ?>
                         </div>
@@ -122,7 +122,7 @@
                             <?php
                             $footer_title_5 = mona_get_option('footer_title_5');
                             if (isset($footer_title_5) || !empty($footer_title_5)) {
-                                echo $footer_title_5;
+                                echo esc_html($footer_title_5);
                             }
                             ?>
                         </div>
@@ -144,7 +144,7 @@
                             <?php
                             $footer_title_6 = mona_get_option('footer_title_6');
                             if (isset($footer_title_6) || !empty($footer_title_6)) {
-                                echo $footer_title_6;
+                                echo esc_html($footer_title_6);
                             }
                             ?>
                         </div>
@@ -199,7 +199,7 @@
                                 <?php
                                 $footer_title_7 = mona_get_option('footer_title_7');
                                 if (isset($footer_title_7) || !empty($footer_title_7)) {
-                                    echo $footer_title_7;
+                                    echo esc_html($footer_title_7);
                                 }
                                 ?>
                             </p>
@@ -207,7 +207,7 @@
                                 <?php
                                 $footer_title_8 = mona_get_option('footer_title_8');
                                 if (isset($footer_title_8) || !empty($footer_title_8)) {
-                                    echo $footer_title_8;
+                                    echo esc_html($footer_title_8);
                                 }
                                 ?>
                             </p>
@@ -216,7 +216,7 @@
                             <div class="footer-ct">
                                 <?php $mona_footer_image = mona_get_option('mona_footer_image');
                                 if ($mona_footer_image) { ?>
-                                <img src="<?php echo $mona_footer_image; ?>">
+                                <img src="<?php echo esc_url($mona_footer_image); ?>">
                                 <?php } ?>
                             </div>
 
@@ -252,14 +252,6 @@
 <div class="back-to-top backToTop">
     <i class="fa-light fa-arrow-up"></i>
 </div>
-<script src="<?php echo MONA_HOME_URL; ?>/template/assets/library/swiper/swiper-bundle.min.js"></script>
-<script src="<?php echo MONA_HOME_URL; ?>/template/assets/library/aos/aos.js"></script>
-<script src="<?php echo MONA_HOME_URL; ?>/template/assets/library/gallery/lightgallery-all.min.js"></script>
-<script src="<?php echo MONA_HOME_URL; ?>/template/assets/library/jquery/jquery-migrate.js"></script>
-<script src="<?php echo MONA_HOME_URL; ?>/template/assets/library/fancybox/fancybox.umd.js"></script>
-<script src="<?php echo MONA_HOME_URL; ?>/template/assets/library/datetime/moment.min.js"></script>
-<script src="<?php echo MONA_HOME_URL; ?>/template/assets/library/datetime/daterangepicker.min.js"></script>
-<script src="<?php echo MONA_HOME_URL; ?>/template/js/main.js" type="module"></script>
 <!-- footer -->
 <?php wp_footer(); ?>
 </body>

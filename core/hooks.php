@@ -34,14 +34,112 @@ add_action('after_setup_theme', 'add_after_setup_theme');
  */
 function mona_add_styles_scripts()
 {
-    wp_enqueue_style('mona-custom', get_template_directory_uri() . '/public/helpers/css/mona-custom.css', array(), rand());
-    wp_enqueue_script('mona-frontend', get_template_directory_uri() . '/public/helpers/scripts/mona-frontend.js', array(), false, true);
+    $theme_dir = get_template_directory();
+    $theme_uri = get_template_directory_uri();
+    $assets_base = defined('MONA_HOME_URL') ? MONA_HOME_URL : get_site_url();
+    $template_assets_url = $assets_base . '/template/assets';
+    $template_js_url = $assets_base . '/template/js';
+
+    $main_style_path = $theme_dir . '/public/builder/css/style.css';
+    $backdoor_style_path = $theme_dir . '/public/builder/css/backdoor.css';
+    $custom_style_path = $theme_dir . '/public/helpers/css/mona-custom.css';
+    $frontend_script_path = $theme_dir . '/public/helpers/scripts/mona-frontend.js';
+
+    wp_enqueue_style(
+        'mona-style',
+        $theme_uri . '/public/builder/css/style.css',
+        [],
+        file_exists($main_style_path) ? filemtime($main_style_path) : null
+    );
+    wp_enqueue_style(
+        'mona-backdoor',
+        $theme_uri . '/public/builder/css/backdoor.css',
+        ['mona-style'],
+        file_exists($backdoor_style_path) ? filemtime($backdoor_style_path) : null
+    );
+    wp_enqueue_style(
+        'mona-custom',
+        $theme_uri . '/public/helpers/css/mona-custom.css',
+        ['mona-style'],
+        file_exists($custom_style_path) ? filemtime($custom_style_path) : null
+    );
+    wp_enqueue_script(
+        'mona-frontend',
+        $theme_uri . '/public/helpers/scripts/mona-frontend.js',
+        ['jquery'],
+        file_exists($frontend_script_path) ? filemtime($frontend_script_path) : null,
+        true
+    );
+    wp_enqueue_script(
+        'mona-swiper',
+        $template_assets_url . '/library/swiper/swiper-bundle.min.js',
+        [],
+        null,
+        true
+    );
+    wp_enqueue_script(
+        'mona-aos',
+        $template_assets_url . '/library/aos/aos.js',
+        [],
+        null,
+        true
+    );
+    wp_enqueue_script(
+        'mona-lightgallery',
+        $template_assets_url . '/library/gallery/lightgallery-all.min.js',
+        [],
+        null,
+        true
+    );
+    wp_enqueue_script(
+        'mona-jquery-migrate',
+        $template_assets_url . '/library/jquery/jquery-migrate.js',
+        ['jquery'],
+        null,
+        true
+    );
+    wp_enqueue_script(
+        'mona-fancybox',
+        $template_assets_url . '/library/fancybox/fancybox.umd.js',
+        ['jquery'],
+        null,
+        true
+    );
+    wp_enqueue_script(
+        'mona-moment',
+        $template_assets_url . '/library/datetime/moment.min.js',
+        [],
+        null,
+        true
+    );
+    wp_enqueue_script(
+        'mona-daterangepicker',
+        $template_assets_url . '/library/datetime/daterangepicker.min.js',
+        ['jquery', 'mona-moment'],
+        null,
+        true
+    );
+    wp_enqueue_script(
+        'mona-main',
+        $template_js_url . '/main.js',
+        [
+            'jquery',
+            'mona-swiper',
+            'mona-aos',
+            'mona-lightgallery',
+            'mona-fancybox',
+            'mona-daterangepicker',
+        ],
+        null,
+        true
+    );
     wp_localize_script(
         'mona-frontend',
         'mona_ajax_url',
         [
             'ajaxURL' => admin_url('admin-ajax.php'),
             'siteURL' => get_site_url(),
+            'nonce' => wp_create_nonce('mona_ajax_nonce'),
         ]
     );
 }
@@ -57,7 +155,7 @@ add_action('wp_enqueue_scripts', 'mona_add_styles_scripts');
  */
 function mona_add_module_to_my_script($tag, $handle, $src)
 {
-    if ('mona-frontend' === $handle) {
+    if (in_array($handle, ['mona-frontend', 'mona-main'], true)) {
         $tag = '<script type="module" src="' . esc_url($src) . '"></script>';
     }
     return $tag;
@@ -252,22 +350,22 @@ function getLogoCustomHtml()
     <div class="overview-profile">
         <?php if (!empty($custom_logo_url)) { ?>
             <div class="overview-profile-logo">
-                <img src="<?php echo $custom_logo_url; ?>" alt="logo" />
+                <img src="<?php echo esc_url($custom_logo_url); ?>" alt="logo" />
             </div>
         <?php } ?>
         <?php if (!empty($site_title)) { ?>
             <div class="overview-profile-title">
-                <?php echo $site_title; ?>
+                <?php echo esc_html($site_title); ?>
             </div>
         <?php } ?>
         <div class="overview-profile-action">
             <div class="overview-profile-user">
-                <span class="monaRedirectAdmin" data-redirect="<?php echo $user_profile_url; ?>">
+                <span class="monaRedirectAdmin" data-redirect="<?php echo esc_url($user_profile_url); ?>">
                     <img src="<?php echo get_template_directory_uri(); ?>/public/helpers/images/ic-admin-user.svg" />
                 </span>
             </div>
             <div class="overview-profile-logout">
-                <span class="monaRedirectAdmin" data-redirect="<?php echo wp_logout_url(home_url() . '/wp-login.php'); ?>">
+                <span class="monaRedirectAdmin" data-redirect="<?php echo esc_url(wp_logout_url(home_url('/wp-login.php'))); ?>">
                     <img src="<?php echo get_template_directory_uri(); ?>/public/helpers/images/ic-admin-logout.svg" />
                 </span>
             </div>
@@ -315,6 +413,7 @@ add_action('wp_ajax_mona_cart_fragments',  'mona_cart_fragments'); // login
 add_action('wp_ajax_nopriv_mona_cart_fragments',  'mona_cart_fragments'); // no login
 function mona_cart_fragments()
 {
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
     wp_send_json_success(
         WC_AJAX::get_refreshed_fragments()
     );
@@ -344,18 +443,27 @@ add_action('wp_ajax_apply_coupon_action', 'apply_coupon_action');
 add_action('wp_ajax_nopriv_apply_coupon_action', 'apply_coupon_action');
 function apply_coupon_action()
 {
+    check_ajax_referer('mona_ajax_nonce', 'nonce');
 
-    $coupon_code       = isset ( $_POST['coupon_code'] ) ? esc_attr( $_POST['coupon_code'] ) : '';
-    $user_id           = get_current_user_id();
-    $user_coupon_codes = get_user_meta( $user_id, 'coupon_codes', true );
-    $user_coupon_codes = array_unique( $user_coupon_codes );
-    $update_result     =  update_user_meta( $user_id, 'coupon_codes', $user_coupon_codes );
+    $coupon_code = '';
+    if (isset($_POST['coupon_code'])) {
+        $coupon_code = sanitize_text_field(wp_unslash($_POST['coupon_code']));
+    }
+    $user_id = get_current_user_id();
+    if ($user_id) {
+        $user_coupon_codes = get_user_meta($user_id, 'coupon_codes', true);
+        if (!is_array($user_coupon_codes)) {
+            $user_coupon_codes = [];
+        }
+        $user_coupon_codes = array_unique($user_coupon_codes);
+        update_user_meta($user_id, 'coupon_codes', $user_coupon_codes);
+    }
 
     // Set a session cookie to remember the coupon if they continue shopping.
 	WC()->session->set_customer_session_cookie(true);
 
-    if ( ! WC()->cart->has_discount( $coupon_code ) ) {
-        WC()->cart->add_discount( $coupon_code );
+    if (!empty($coupon_code) && !WC()->cart->has_discount($coupon_code)) {
+        WC()->cart->add_discount($coupon_code);
         wp_send_json_success(
             [
                 'title' => __('Thông báo!', 'monamedia'),

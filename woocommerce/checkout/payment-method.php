@@ -36,19 +36,19 @@ $total_amount = WC()->cart->total;
         <div class="recheck-text-img">
             <?php if( $gateway->id === 'cod' ){ ?>
             <div class="img">
-                <img src="<?php get_site_url(); ?>/template/assets/images/cod.png" alt="" />
+                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/cod.png" alt="" />
             </div>
             <?php }else if( $gateway->id === 'fundiin' ){ ?> 
             <div class="img">
-                <img src="<?php get_site_url(); ?>/template/assets/images/fundiin.png" alt="" />
+                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/fundiin.png" alt="" />
             </div>
             <?php }else if( $gateway->id === 'momo' ){ ?> 
             <div class="img">
-                <img src="<?php get_site_url(); ?>/template/assets/images/momo.png" alt="" />
+                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/momo.png" alt="" />
             </div>
             <?php }else if( $gateway->id === 'vnpay' ){ ?> 
             <div class="img">
-                <img src="<?php get_site_url(); ?>/template/assets/images/vnpay.png" alt="" />
+                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/vnpay.png" alt="" />
             </div>
             <?php } ?>
             <p class="txt fw-5">

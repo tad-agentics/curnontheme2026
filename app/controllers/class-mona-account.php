@@ -227,7 +227,16 @@ class Account
 
     public function mona_ajax_upload_post_img()
     {
-        $f =  $_POST['data'];
+        check_ajax_referer('mona_ajax_nonce', 'nonce');
+
+        if (!is_user_logged_in()) {
+            wp_send_json_error(['messenger' => __('Unauthorized', 'monamedia')]);
+        }
+
+        $f = isset($_POST['data']) ? wp_unslash($_POST['data']) : '';
+        if (empty($f)) {
+            wp_send_json_error(['messenger' => __('Invalid image data', 'monamedia')]);
+        }
 
         $data = getimagesize($f);
         // $data = base64_decode($f);
@@ -246,12 +255,16 @@ class Account
         $up = (new Mona_upload())->mona_upload_image_base64($file);
         // var_dump($up);
 
-        $output = array('file_id' => $up, 'url' => wp_get_attachment_image_url($up, 'full'), 'status' => 'success', 'messenger' => __('Successfully Updated Profile Picture', 'monamedia'));
+        $output = array(
+            'file_id' => $up,
+            'url' => wp_get_attachment_image_url($up, 'full'),
+            'status' => 'success',
+            'messenger' => __('Successfully Updated Profile Picture', 'monamedia'),
+        );
         if ($up != '') {
             update_user_meta(get_current_user_id(), '_thumb', $up);
         }
-        echo json_encode($output);
-        wp_die();
+        wp_send_json_success($output);
     }
 }
 

@@ -94,18 +94,18 @@ if ($loop_posts->have_posts()) :
                                                                         <div class="star">
                                                                             <div class="star-list">
                                                                                 <div class="star-flex star-empty">
-                                                                                    <img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" />
-                                                                                    <img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" />
-                                                                                    <img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" />
-                                                                                    <img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" />
-                                                                                    <img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" />
+                                                                                    <img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" />
+                                                                                    <img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" />
+                                                                                    <img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" />
+                                                                                    <img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" />
+                                                                                    <img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" />
                                                                                 </div>
                                                                                 <div class="star-flex star-filter" style="width:<?php echo $mona_sc_2_group_global['start'] * 20; ?>%;">
-                                                                                    <img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" />
-                                                                                    <img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" />
-                                                                                    <img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" />
-                                                                                    <img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" />
-                                                                                    <img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" />
+                                                                                    <img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" />
+                                                                                    <img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" />
+                                                                                    <img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" />
+                                                                                    <img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" />
+                                                                                    <img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" />
                                                                                 </div>
                                                                             </div>
                                                                         </div>

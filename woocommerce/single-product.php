@@ -41,7 +41,7 @@ while (have_posts()) :
         if (count($variation_ids) > 0) {
             $variation_id = reset($variation_ids);
             $_product = new WC_Product_Variation($variation_id);
-            if ($product->get_price() == 0) {
+            if ($product_obj->get_price() == 0) {
                 $price_html = '<p class="price-new">' . __('Liên hệ', 'monamedia') . '</p>';
             } else {
 
@@ -50,11 +50,11 @@ while (have_posts()) :
             }
         }
     } else {
-        if ($product->get_price() == 0) {
+        if ($product_obj->get_price() == 0) {
             $price_html = '<p class="price-new">' . __('Liên hệ', 'monamedia') . '</p>';
         } else {
-            $price_html = $product->get_price_html();
-            $percent_sale = m_get_percent_sale($_product);
+            $price_html = $product_obj->get_price_html();
+            $percent_sale = m_get_percent_sale($product_obj);
         }
     }
 
@@ -98,28 +98,30 @@ while (have_posts()) :
 
                                 <!-- info product  -->
                                 <form id="frmAddProduct">
-                                    <input type="hidden" name="product_id" value="<?php echo $product_id ?>">
+                                    <?php wp_nonce_field('mona_ajax_nonce', 'mona_nonce'); ?>
+                                    <input type="hidden" name="product_id" value="<?php echo absint($product_id); ?>">
                                     <div class="pdp-right-ctn">
                                         <div class="pdp-op">
                                             <p class="fw-5 c-grey">
                                                 <!-- category of product  -->
                                                 <?php
                                                 $taxonomy = 'product_cat';
-                                                $primary_cat_id = get_post_meta($product->id, '_yoast_wpseo_primary_' . $taxonomy, true);
+                                                $primary_cat_id = get_post_meta($product_id, '_yoast_wpseo_primary_' . $taxonomy, true);
                                                 if ($primary_cat_id) {
                                                     $primary_cat = get_term($primary_cat_id, $taxonomy);
-                                                    if (isset($primary_cat->name))
-                                                        echo $primary_cat->name;
+                                                    if (isset($primary_cat->name)) {
+                                                        echo esc_html($primary_cat->name);
+                                                    }
                                                 }
                                                 ?>
                                             </p>
-                                            <h1 class="pdp-name f-title fw-7"><?php echo $product_obj->get_title(); ?></h1>
+                                            <h1 class="pdp-name f-title fw-7"><?php echo esc_html($product_obj->get_title()); ?></h1>
 
                                             <div class="pdp-star">
                                                 <div class="star">
                                                     <div class="star-list">
-                                                        <div class="star-flex star-empty"><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /></div>
-                                                        <div class="star-flex star-filter" style="width: 100%;"><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /></div>
+                                                        <div class="star-flex star-empty"><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" /></div>
+                                                        <div class="star-flex star-filter" style="width: 100%;"><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" /></div>
                                                     </div>
                                                 </div>
                                                 <span class="fw-5">
@@ -138,7 +140,7 @@ while (have_posts()) :
 
                                                 </div>
 
-                                                <?php if ($product->get_stock_status() == 'outofstock') { ?>
+                                                <?php if ($product_obj->get_stock_status() == 'outofstock') { ?>
                                                     <div class="check-stock">
                                                         <p class="text"><?php _e('Tạm hết hàng!', 'monamedia'); ?></p>
                                                     </div>
@@ -213,7 +215,7 @@ while (have_posts()) :
                                                                 <div class="pdp-ch-list">
 
                                                                     <div class="pdp-ch-item">
-                                                                        <div class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/location.svg" alt="" />
+                                                                        <div class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/location.svg" alt="" />
                                                                         </div>
                                                                         <div class="text">
                                                                             <?php while ($loop_posts->have_posts()) :
@@ -221,7 +223,7 @@ while (have_posts()) :
                                                                                 $loop_posts->the_post();
                                                                                 $link = get_field('mona_link_dia_chi', $post->ID);
                                                                             ?>
-                                                                                <a class="link" href="<?php echo $link; ?>">
+                                                                                <a class="link" href="<?php echo esc_url($link); ?>">
                                                                                     <?php echo get_the_title($post->ID); ?>
                                                                                 </a>
                                                                             <?php endwhile;
@@ -264,16 +266,16 @@ while (have_posts()) :
 
                                                         <!-- wishlist mobile  -->
                                                         <?php if (is_user_logged_in()) { ?>
-                                                            <div class="pdp-control-wish <?php echo $cls; ?>" data-key="<?php echo get_the_ID(); ?>">
+                                                            <div class="pdp-control-wish <?php echo esc_attr($cls); ?>" data-key="<?php echo absint(get_the_ID()); ?>">
                                                                 <span class="icon is-loading-group">
-                                                                    <img src="<?php get_site_url(); ?>/template/assets/images/icon-heart.svg" alt="" />
+                                                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/icon-heart.svg" alt="" />
 
                                                                 </span>
                                                             </div>
                                                         <?php } else { ?>
                                                             <a href="<?php echo site_url('dang-nhap/'); ?>" class="pdp-control-wish">
                                                                 <span class="icon">
-                                                                    <img src="<?php get_site_url(); ?>/template/assets/images/icon-heart.svg" alt="" />
+                                                                    <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/icon-heart.svg" alt="" />
                                                                 </span>
                                                             </a>
                                                         <?php } ?>
@@ -343,16 +345,16 @@ while (have_posts()) :
                                                     <div class="sre-box">
                                                         <div class="star">
                                                             <div class="star-list">
-                                                                <div class="star-flex star-empty"><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star-fill.svg" alt="" /></div>
-                                                                <div class="star-flex star-filter" style="width: <?php echo $item['rating'] * 20; ?>%;"><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php get_site_url(); ?>/template/assets/images/Star.svg" alt="" /></div>
+                                                                <div class="star-flex star-empty"><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star-fill.svg" alt="" /></div>
+                                                                <div class="star-flex star-filter" style="width: <?php echo esc_attr(floatval($item['rating']) * 20); ?>%;"><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" /><img class="icon" src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/Star.svg" alt="" /></div>
                                                             </div>
                                                         </div>
                                                         <div class="sre-desc mona-content">
-                                                            <?php echo $item['content'] ?>
+                                                            <?php echo wp_kses_post($item['content']); ?>
                                                         </div>
                                                         <div class="sre-bot">
-                                                            <div class="sre-name"><?php echo $item['fullname'] ?></div>
-                                                            <div class="sre-date"><?php echo $item['date'] ?></div>
+                                                            <div class="sre-name"><?php echo esc_html($item['fullname']); ?></div>
+                                                            <div class="sre-date"><?php echo esc_html($item['date']); ?></div>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -71,9 +71,9 @@ while (have_posts()) :
                         </div>
                     </div>
                 </div>
-                <!-- <div class="bdban-img" data-aos="fade-up"><img src="<?php get_site_url(); ?>/template/assets/images/bdban-img.jpg" alt="" />
+                <!-- <div class="bdban-img" data-aos="fade-up"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/bdban-img.jpg" alt="" />
                 </div>
-                <div class="bdban-img bdban-img-mb d-none"><img src="<?php get_site_url(); ?>/template/assets/images/bdban-img-mb.jpg" alt="" />
+                <div class="bdban-img bdban-img-mb d-none"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/bdban-img-mb.jpg" alt="" />
                 </div> -->
             </div>
         </div>

@@ -1,0 +1,12 @@
+cart-empty.png
+cart-empty.png.webp
+cube-loading.svg
+default-mona.png
+default-mona.png.webp
+ic-admin-logout.svg
+ic-admin-user.svg
+icon-fav.svg
+icon-loading-ring.svg
+loader-2.svg
+loader.svg
+loading_see_more.svg

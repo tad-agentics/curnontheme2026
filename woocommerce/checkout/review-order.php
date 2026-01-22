@@ -169,7 +169,7 @@ remove_action('woocommerce_checkout_order_review', 'woocommerce_checkout_payment
                         <?php foreach (WC()->cart->get_coupons() as $code => $coupon) : ?>
                             <div class="pcart-promo-item">
                                 <div class="pcart-promo-left">
-                                    <span class="icon"> <img src="<?php get_site_url(); ?>/template/assets/images/icon-tag.svg" alt="" /></span>
+                                    <span class="icon"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/icon-tag.svg" alt="" /></span>
                                     <span class="text"><?php wc_cart_totals_coupon_label($coupon); ?></span>
                                 </div>
                             </div>
@@ -212,6 +212,7 @@ remove_action('woocommerce_checkout_order_review', 'woocommerce_checkout_payment
                                     url: mona_ajax_url.ajaxURL,
                                     data: {
                                         action: 'apply_coupon_action',
+                                        nonce: mona_ajax_url.nonce,
                                         coupon_code: couponCode,
                                     },
                                     error: function(request) {

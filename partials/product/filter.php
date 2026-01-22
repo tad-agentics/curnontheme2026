@@ -17,7 +17,7 @@ $current_cat = get_queried_object();
 <div class="pcollec-fi parent-active-js">
     <div class="pcollec-fi-top add-active-js">
         <span class="icon">
-            <img src="<?php get_site_url(); ?>/template/assets/images/filter-icon.png" alt="" />
+            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/filter-icon.png" alt="" />
         </span>
         <span class="text"><?php _e('Filter', 'monamedia') ?></span>
         <span class="icon-arrow">
@@ -31,7 +31,7 @@ $current_cat = get_queried_object();
 
                     </i></span><span class="text fw-6 f-title"><?php _e('BỘ LỌC', 'monamedia') ?></span>
             </div>
-            <div class="pcollec-fi-close right"><img src="<?php get_site_url(); ?>/template/assets/images/close.png"
+            <div class="pcollec-fi-close right"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/close.png"
                     alt="" />
             </div>
         </div>

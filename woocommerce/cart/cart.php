@@ -24,7 +24,7 @@ do_action('woocommerce_before_cart'); ?>
     <div class="banner">
         <div class="container">
             <div class="banner-inner">
-                <div class="banner-dc"> <img src="<?php get_site_url(); ?>/template/assets/images/pattern.png" alt="" />
+                <div class="banner-dc"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pattern.png" alt="" />
                 </div>
                 <?php get_template_part('partials/breadcrumb'); ?>
 

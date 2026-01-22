@@ -26,11 +26,7 @@ if (!defined('ABSPATH')) {
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
     <?php wp_site_icon(); ?>
-    <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
-    <link rel="stylesheet" href="<?php echo MONA_HOME_URL; ?>/template/css/style.css">
-    <link rel="stylesheet" href="<?php echo MONA_HOME_URL; ?>/template/css/backdoor.css">
-    <script src="<?php echo MONA_HOME_URL; ?>/template/assets/library/jquery/jquery.js"></script>
-    <script src="<?php echo MONA_HOME_URL; ?>/template/assets/library/select2/select2.min.js"></script>
+    <link rel="pingback" href="<?php echo esc_url(get_bloginfo('pingback_url')); ?>" />
     <?php wp_head(); ?>
 </head>
 <?php
@@ -47,8 +43,8 @@ if (wp_is_mobile()) {
                 <div class="header-wrap">
                     <div class="header-burger">
                         <div class="hamburger" id="hamburger">
-                            <img src="<?php get_site_url(); ?>/template/assets/images/hamburger.svg" alt="" /><span class="icon-close">
-                                <img src="<?php get_site_url(); ?>/template/assets/images/close.png" alt="" /></span>
+                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/hamburger.svg" alt="" /><span class="icon-close">
+                                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/close.png" alt="" /></span>
                         </div>
                     </div>
                     <div class="header-logo">
@@ -57,11 +53,11 @@ if (wp_is_mobile()) {
                         </div>
                     </div>
                     <div class="header-logo-mobile">
-                        <a href="<?php echo home_url(); ?>" class="custom-logo-link" rel="home">
+                        <a href="<?php echo esc_url(home_url()); ?>" class="custom-logo-link" rel="home">
 
                             <?php $header_image_mobile_logo = mona_get_option('header_image_mobile_logo');
                             if ($header_image_mobile_logo) { ?>
-                                <img src="<?php echo $header_image_mobile_logo; ?>">
+                                <img src="<?php echo esc_url($header_image_mobile_logo); ?>">
                             <?php } ?>
 
                         </a>
@@ -89,23 +85,23 @@ if (wp_is_mobile()) {
 
                             <!-- tìm kiếm  -->
                             <div class="header-btn-search header-action">
-                                <div class="header-action-icon"><span class="icon"><img src="<?php get_site_url(); ?>/template/assets/images/search.svg" alt="" /></span></div>
+                                <div class="header-action-icon"><span class="icon"><img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/search.svg" alt="" /></span></div>
                             </div>
 
                             <!-- wishlist  -->
                             <?php if (is_user_logged_in()) { ?>
                                 <div class="header-action">
-                                    <a class="header-action-icon" href="<?php echo site_url('tai-khoan/wish-list/') ?>">
+                                    <a class="header-action-icon" href="<?php echo esc_url(site_url('tai-khoan/wish-list/')); ?>">
                                         <span class="icon">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/heart.svg" alt="" />
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/heart.svg" alt="" />
                                         </span>
                                     </a>
                                 </div>
                             <?php } else {  ?>
                                 <div class="header-action">
-                                    <a class="header-action-icon" href="<?php echo site_url('dang-nhap/') ?>">
+                                    <a class="header-action-icon" href="<?php echo esc_url(site_url('dang-nhap/')); ?>">
                                         <span class="icon">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/heart.svg" alt="" />
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/heart.svg" alt="" />
                                         </span>
                                     </a>
                                 </div>
@@ -117,7 +113,7 @@ if (wp_is_mobile()) {
                                 <div class="header-action">
                                     <button class="header-action-icon popup-open" data-popup="popup-login">
                                         <span class="icon">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/user.svg" alt="" /></span>
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/user.svg" alt="" /></span>
                                     </button>
                                 </div>
 
@@ -126,7 +122,7 @@ if (wp_is_mobile()) {
                                 <div class="header-action">
                                     <button class="header-action-icon popup-open" data-popup="popup-login-2">
                                         <span class="icon">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/user.svg" alt="" /></span>
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/user.svg" alt="" /></span>
                                     </button>
                                 </div>
 
@@ -134,13 +130,12 @@ if (wp_is_mobile()) {
 
                             <div class="header-action">
                                 <!-- <div class="header-action-icon popup-open" id="popup-cart" data-popup="popup-cart"> -->
-                                <a href="<?php echo get_permalink(MONA_WC_CHECKOUT);
-                                            ?>" class="header-action-icon">
+                                <a href="<?php echo esc_url(get_permalink(MONA_WC_CHECKOUT)); ?>" class="header-action-icon">
                                     <span class="icon">
-                                        <img src="<?php get_site_url(); ?>/template/assets/images/cart.svg" alt="" />
+                                        <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/cart.svg" alt="" />
                                     </span>
                                     <span class="text num" id="mona-cart-qty">
-                                        <?php echo WC()->cart->get_cart_contents_count(); ?>
+                                        <?php echo absint(WC()->cart->get_cart_contents_count()); ?>
                                     </span>
                                 </a>
                             </div>
@@ -161,7 +156,7 @@ if (wp_is_mobile()) {
             <!-- header mobile version  -->
             <div class="mobile">
                 <div class="mobile-con">
-                    <div class="mobile-close"> <img src="<?php get_site_url(); ?>/template/assets/images/close.png" alt="" />
+                    <div class="mobile-close"> <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/close.png" alt="" />
                     </div>
                     <div class="mobile-wr">
                         <div class="mobile-nav">
@@ -222,7 +217,7 @@ if (wp_is_mobile()) {
                                     <div class="mobile-sub-item">
                                         <div class="mobile-sub-item-top tech-item-head">
                                             <span class="text">
-                                                <?php echo $parent_cat_dong_ho_nam->name; ?>
+                                            <?php echo esc_html($parent_cat_dong_ho_nam->name); ?>
                                             </span>
                                             <a class="mobile-sub-link" href="<?php echo site_url('dong-ho/dong-ho-nam/'); ?>">
                                                 <?php _e('SHOP ALL', 'monamedia') ?>
@@ -240,7 +235,7 @@ if (wp_is_mobile()) {
                                                             <?php echo wp_get_attachment_image($image_product_cat, 'full'); ?>
                                                         </span>
                                                         <span class="mega-dh-name">
-                                                            <?php echo $child_cat->name; ?>
+                                                            <?php echo esc_html($child_cat->name); ?>
                                                         </span>
                                                     </a>
 
@@ -262,7 +257,7 @@ if (wp_is_mobile()) {
                                     <!-- trang sức nam  -->
                                     <div class="mobile-sub-item">
                                         <div class="mobile-sub-item-top tech-item-head"><span class="text">
-                                                <?php echo $parent_cat_trang_suc_nam->name; ?>
+                                                <?php echo esc_html($parent_cat_trang_suc_nam->name); ?>
                                             </span>
                                             <a class="mobile-sub-link" href="<?php echo site_url('trang-suc/trang-suc-nam'); ?>">
                                                 <?php _e('SHOP ALL', 'monamedia') ?>
@@ -282,7 +277,7 @@ if (wp_is_mobile()) {
                                                                 <?php echo wp_get_attachment_image($image_child_cat, 'full'); ?>
                                                             </a>
                                                         </div>
-                                                        <a class="mega-ts-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo $child_cat->name; ?></a>
+                                                        <a class="mega-ts-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo esc_html($child_cat->name); ?></a>
                                                     </div>
 
                                                 <?php } ?>
@@ -303,7 +298,7 @@ if (wp_is_mobile()) {
                                     <!-- dây đồng hồ   -->
                                     <div class="mobile-sub-item">
                                         <div class="mobile-sub-item-top tech-item-head"><span class="text">
-                                                <?php echo $parent_cat_day_dong_ho->name; ?>
+                                                <?php echo esc_html($parent_cat_day_dong_ho->name); ?>
                                             </span>
                                             <a class="mobile-sub-link" href="<?php echo site_url('dong-ho/day-dong-ho-nam'); ?>">
                                                 <?php _e('SHOP ALL', 'monamedia') ?>
@@ -325,7 +320,7 @@ if (wp_is_mobile()) {
                                                                         <?php echo wp_get_attachment_image($image_child_cat, 'full'); ?>
                                                                     </a>
                                                                 </div>
-                                                                <a class="mega-ddh-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo $child_cat->name; ?></a>
+                                                                <a class="mega-ddh-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo esc_html($child_cat->name); ?></a>
                                                             </div>
                                                         </div>
 
@@ -347,7 +342,7 @@ if (wp_is_mobile()) {
                                 <!-- best sellers   -->
                                 <div class="mobile-sub-item">
                                     <div class="mobile-sub-item-top tech-item-head">
-                                        <span class="text"><?php echo $tieu_de_1_best_sellers; ?></span><a class="mobile-sub-link" href="<?php echo site_url('best-sellers'); ?>">
+                                        <span class="text"><?php echo esc_html($tieu_de_1_best_sellers); ?></span><a class="mobile-sub-link" href="<?php echo esc_url(site_url('best-sellers')); ?>">
                                             <?php _e('SHOP ALL', 'monamedia') ?>
                                         </a>
                                     </div>
@@ -359,7 +354,7 @@ if (wp_is_mobile()) {
                                                         <?php echo wp_get_attachment_image($mona_hinh_anh_1_best_sellers, 'full'); ?>
                                                     </div>
                                                     <span class="text">
-                                                        <?php echo $tieu_de_1_best_sellers; ?>
+                                                        <?php echo esc_html($tieu_de_1_best_sellers); ?>
                                                     </span>
                                                 </div>
                                             </div>
@@ -370,7 +365,7 @@ if (wp_is_mobile()) {
                                                     </div>
                                                 </div>
                                                 <div class="mega-bs-desc">
-                                                    <span class="text"><?php echo $tieu_de_2_best_sellers; ?></span><a class="mega-bs-link" href="<?php echo site_url('new-arrivals'); ?>"><?php _e('SHOP NOW', 'monamedia') ?></a>
+                                                    <span class="text"><?php echo esc_html($tieu_de_2_best_sellers); ?></span><a class="mega-bs-link" href="<?php echo esc_url(site_url('new-arrivals')); ?>"><?php _e('SHOP NOW', 'monamedia') ?></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -433,7 +428,7 @@ if (wp_is_mobile()) {
                                 <div class="container">
                                     <div class="empty-product">
                                         <a class="image-empty-product" href="<?php echo home_url(); ?>">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
                                         </a>
                                         <p class="text">
                                             <?php _e('Hiện tại, sản phẩm bạn tìm kiếm hiện đang cập nhật. Vui lòng quay lại sau hoặc liên hệ với chúng tôi.', 'monamedia'); ?>
@@ -473,7 +468,7 @@ if (wp_is_mobile()) {
                                     <div class="mobile-sub-item">
                                         <div class="mobile-sub-item-top tech-item-head">
                                             <span class="text">
-                                                <?php echo $parent_cat_dong_ho_nu->name; ?>
+                                                <?php echo esc_html($parent_cat_dong_ho_nu->name); ?>
                                             </span>
                                             <a class="mobile-sub-link" href="<?php echo site_url('dong-ho/dong-ho-nu'); ?>">
                                                 <?php _e('SHOP ALL', 'monamedia') ?>
@@ -491,7 +486,7 @@ if (wp_is_mobile()) {
                                                             <?php echo wp_get_attachment_image($image_product_cat, 'full'); ?>
                                                         </span>
                                                         <span class="mega-dh-name">
-                                                            <?php echo $child_cat->name; ?>
+                                                            <?php echo esc_html($child_cat->name); ?>
                                                         </span>
                                                     </a>
 
@@ -513,7 +508,7 @@ if (wp_is_mobile()) {
                                     <!-- trang sức nu  -->
                                     <div class="mobile-sub-item">
                                         <div class="mobile-sub-item-top tech-item-head"><span class="text">
-                                                <?php echo $parent_cat_trang_suc_nu->name; ?>
+                                                <?php echo esc_html($parent_cat_trang_suc_nu->name); ?>
                                             </span>
                                             <a class="mobile-sub-link" href="<?php echo site_url('trang-suc/trang-suc-nu'); ?>">
                                                 <?php _e('SHOP ALL', 'monamedia') ?>
@@ -533,7 +528,7 @@ if (wp_is_mobile()) {
                                                                 <?php echo wp_get_attachment_image($image_child_cat, 'full'); ?>
                                                             </a>
                                                         </div>
-                                                        <a class="mega-ts-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo $child_cat->name; ?></a>
+                                                    <a class="mega-ts-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo esc_html($child_cat->name); ?></a>
                                                     </div>
 
                                                 <?php } ?>
@@ -554,7 +549,7 @@ if (wp_is_mobile()) {
                                     <!-- dây đồng hồ nữ  -->
                                     <div class="mobile-sub-item">
                                         <div class="mobile-sub-item-top tech-item-head"><span class="text">
-                                                <?php echo $parent_cat_day_dong_ho_nu->name; ?>
+                                                <?php echo esc_html($parent_cat_day_dong_ho_nu->name); ?>
                                             </span>
                                             <a class="mobile-sub-link" href="<?php echo site_url('dong-ho/day-dong-ho-nu'); ?>">
                                                 <?php _e('SHOP ALL', 'monamedia') ?>
@@ -576,7 +571,7 @@ if (wp_is_mobile()) {
                                                                         <?php echo wp_get_attachment_image($image_child_cat, 'full'); ?>
                                                                     </a>
                                                                 </div>
-                                                                <a class="mega-ddh-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo $child_cat->name; ?></a>
+                                                                <a class="mega-ddh-name" href="<?php echo esc_url($link_child_cat); ?>"><?php echo esc_html($child_cat->name); ?></a>
                                                             </div>
                                                         </div>
 
@@ -598,7 +593,7 @@ if (wp_is_mobile()) {
                                 <!-- best sellers nữ   -->
                                 <div class="mobile-sub-item">
                                     <div class="mobile-sub-item-top tech-item-head">
-                                        <span class="text"><?php echo $tieu_de_1_best_sellers; ?></span><a class="mobile-sub-link" href="<?php echo site_url('best-sellers'); ?>">
+                                        <span class="text"><?php echo esc_html($tieu_de_1_best_sellers); ?></span><a class="mobile-sub-link" href="<?php echo esc_url(site_url('best-sellers')); ?>">
                                             <?php _e('SHOP ALL', 'monamedia') ?>
                                         </a>
                                     </div>
@@ -610,7 +605,7 @@ if (wp_is_mobile()) {
                                                         <?php echo wp_get_attachment_image($mona_hinh_anh_1_best_sellers, 'full'); ?>
                                                     </div>
                                                     <span class="text">
-                                                        <?php echo $tieu_de_1_best_sellers; ?>
+                                                        <?php echo esc_html($tieu_de_1_best_sellers); ?>
                                                     </span>
                                                 </div>
                                             </div>
@@ -621,7 +616,7 @@ if (wp_is_mobile()) {
                                                     </div>
                                                 </div>
                                                 <div class="mega-bs-desc">
-                                                    <span class="text"><?php echo $tieu_de_2_best_sellers; ?></span><a class="mega-bs-link" href="<?php echo site_url('new-arrivals'); ?>"><?php _e('SHOP NOW', 'monamedia') ?></a>
+                                                    <span class="text"><?php echo esc_html($tieu_de_2_best_sellers); ?></span><a class="mega-bs-link" href="<?php echo esc_url(site_url('new-arrivals')); ?>"><?php _e('SHOP NOW', 'monamedia') ?></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -684,7 +679,7 @@ if (wp_is_mobile()) {
                                 <div class="container">
                                     <div class="empty-product">
                                         <a class="image-empty-product" href="<?php echo home_url(); ?>">
-                                            <img src="<?php get_site_url(); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
+                                            <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/empty-cart-curnon.png" alt="this is a image of empty product">
                                         </a>
                                         <p class="text">
                                             <?php _e('Hiện tại, sản phẩm bạn tìm kiếm hiện đang cập nhật. Vui lòng quay lại sau hoặc liên hệ với chúng tôi.', 'monamedia'); ?>
@@ -704,7 +699,7 @@ if (wp_is_mobile()) {
                     <!-- quà tặng  -->
                     <?php if ($mona_tax_qua_tang) : ?>
                         <div class="mobile-sub mobile-sub-js"><a class="mobile-sub-pre">
-                                <span class="icon"> <i class="fa-solid fa-arrow-left"></i></span><span class="text f-title"><?php echo $mona_tax_qua_tang->name; ?></span></a>
+                                <span class="icon"> <i class="fa-solid fa-arrow-left"></i></span><span class="text f-title"><?php echo esc_html($mona_tax_qua_tang->name); ?></span></a>
                             <div class="mobile-sub-ctn">
                                 <div class="mobile-sub-item">
                                     <div class="mega-qt-list">
@@ -725,7 +720,7 @@ if (wp_is_mobile()) {
                                                     <a class="mega-qt-img" href="<?php echo esc_url($link_item); ?>">
                                                         <?php echo wp_get_attachment_image($image_product_cat, 'full'); ?>
                                                     </a>
-                                                    <a class="mega-qt-name fw-5"><?php echo $item->name; ?></a>
+                                                    <a class="mega-qt-name fw-5"><?php echo esc_html($item->name); ?></a>
                                                 </div>
                                             </div>
 
@@ -833,7 +828,7 @@ if (wp_is_mobile()) {
             <div class="popup-main">
                 <div class="popup-over">
                     <p class="t28 fw-6 f-title"><?php _e('HI, ', 'monamedia'); ?>
-                        <?php echo $user_data->display_name; ?>
+                        <?php echo esc_html($user_data->display_name); ?>
                     </p>
                     <div class="popup-login-list">
                         <a class="popup-login-item" href="<?php echo site_url('tai-khoan/') ?>"><?php _e('My Account', 'monamedia') ?></a>

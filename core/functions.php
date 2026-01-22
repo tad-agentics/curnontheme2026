@@ -267,10 +267,9 @@ function mona_get_image_id_by_url($image_url = '')
     if (empty($image_url)) {
         return;
     }
-    global $wpdb;
-    $attachment = $wpdb->get_col($wpdb->prepare("SELECT ID FROM $wpdb->posts WHERE guid='%s';", $image_url));
-    if (!empty($attachment)) {
-        return $attachment[0];
+    $attachment_id = attachment_url_to_postid($image_url);
+    if (!empty($attachment_id)) {
+        return $attachment_id;
     }
 }
 
@@ -368,9 +367,9 @@ function content_exists($content_args = [])
 
 function show($args)
 {
-    if (get_current_user_id() == 1) {
+    if (defined('WP_DEBUG') && WP_DEBUG && current_user_can('manage_options')) {
         echo '<pre>';
-        print_r($args);
+        echo esc_html(print_r($args, true));
         echo '</pre>';
     }
 }

@@ -39,6 +39,7 @@ export default function checkout() {
         data: {
           action: "m_append_coupon",
           id: coupon,
+          nonce: mona_ajax_url.nonce,
         },
         error: function (request) {
           loading.removeClass("processing");
@@ -116,6 +117,7 @@ export default function checkout() {
       type: "post",
       data: {
         action: "mona_cart_fragments",
+        nonce: mona_ajax_url.nonce,
       },
       error: function (request) {
         processing.removeClass("processing");
@@ -166,6 +168,7 @@ export default function checkout() {
         data: {
           action: "mona_user_save_order",
           form: formData,
+          nonce: mona_ajax_url.nonce,
         },
         error: function (request) {
           processing.removeClass("processing");
@@ -196,6 +199,7 @@ export default function checkout() {
         data: {
           action: "mona_user_save_shipping",
           form: formData,
+          nonce: mona_ajax_url.nonce,
         },
         error: function (request) {
           processing.removeClass("processing");
@@ -226,6 +230,7 @@ export default function checkout() {
         data: {
           action: "mona_user_save_time",
           form: formData,
+          nonce: mona_ajax_url.nonce,
         },
         error: function (request) {
           processing.removeClass("processing");
@@ -256,6 +261,7 @@ export default function checkout() {
         data: {
           action: "mona_user_save_vat",
           form: formData,
+          nonce: mona_ajax_url.nonce,
         },
         error: function (request) {
           processing.removeClass("processing");

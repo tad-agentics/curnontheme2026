@@ -119,7 +119,7 @@ class MonaProductClass
                 <?php if (is_user_logged_in()) { ?>
                     <div class="pdp-control-wish <?php echo $cls; ?>" data-key="<?php echo get_the_ID(); ?>">
                         <span class="icon is-loading-group">
-                            <!-- <img src="<?php get_site_url(); ?>/template/assets/images/icon-heart.svg"
+                            <!-- <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/icon-heart.svg"
                                                             alt="" /> -->
                             <i class="fa-light fa-heart"></i>
                         </span>
@@ -127,7 +127,7 @@ class MonaProductClass
                 <?php } else { ?>
                     <a href="<?php echo site_url('dang-nhap/'); ?>" class="pdp-control-wish">
                         <span class="icon">
-                            <!-- <img src="<?php get_site_url(); ?>/template/assets/images/icon-heart.svg"
+                            <!-- <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/icon-heart.svg"
                                                             alt="" /> -->
                             <i class="fa-light fa-heart"></i>
                         </span>
@@ -159,7 +159,7 @@ class MonaProductClass
                 <?php if (is_user_logged_in()) { ?>
                     <div class="pdp-control-wish <?php echo $cls; ?>" data-key="<?php echo get_the_ID(); ?>">
                         <span class="icon is-loading-group">
-                            <!-- <img src="<?php get_site_url(); ?>/template/assets/images/icon-heart.svg"
+                            <!-- <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/icon-heart.svg"
                                                          alt="" /> -->
                             <i class="fa-light fa-heart"></i>
                         </span>
@@ -167,7 +167,7 @@ class MonaProductClass
                 <?php } else { ?>
                     <a href="<?php echo site_url('dang-nhap/'); ?>" class="pdp-control-wish">
                         <span class="icon">
-                            <!-- <img src="<?php get_site_url(); ?>/template/assets/images/icon-heart.svg"
+                            <!-- <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/icon-heart.svg"
                                                          alt="" /> -->
                             <i class="fa-light fa-heart"></i>
                         </span>
@@ -243,6 +243,7 @@ class MonaProductClass
 
     public function m_popupopen_card()
     {
+        check_ajax_referer('mona_ajax_nonce', 'nonce');
         $dataNote = [
             'mess' => 'Please log in to add your favorite products',
         ];
@@ -252,9 +253,10 @@ class MonaProductClass
 
     public function m_remove_wishlist_item()
     {
+        check_ajax_referer('mona_ajax_nonce', 'nonce');
         $user_id = get_current_user_id();
-        $keys = esc_attr($_POST['key']);
-        if ($keys != "") {
+        $keys = isset($_POST['key']) ? sanitize_text_field(wp_unslash($_POST['key'])) : '';
+        if ($keys !== '') {
             if ($user_id) {
                 $wishlist_array = get_user_meta($user_id, '_wishlist', true) ? get_user_meta($user_id, '_wishlist', true) : [];
                 if ($wishlist_array) {
@@ -289,9 +291,10 @@ class MonaProductClass
 
     public function m_add_wishlist_item()
     {
-        $data = $_POST;
-        if ($data) {
-            $this->m_wishlist_item($data['product_id']);
+        check_ajax_referer('mona_ajax_nonce', 'nonce');
+        $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
+        if ($product_id) {
+            $this->m_wishlist_item($product_id);
         }
         wp_die();
     }
@@ -680,7 +683,8 @@ class MonaProductClass
 
     public function m_append_coupon()
     {
-        $coupon = isset($_POST['id']) ? sanitize_text_field($_POST['id']) : '';
+        check_ajax_referer('mona_ajax_nonce', 'nonce');
+        $coupon = isset($_POST['id']) ? sanitize_text_field(wp_unslash($_POST['id'])) : '';
 
         if (WC()->cart->has_discount($coupon)) {
             wp_send_json_error(
@@ -725,10 +729,14 @@ class MonaProductClass
     // Cart
     public function m_update_quantity_item()
     {
-        $key = @$_POST['key'];
-        $qty = @$_POST['qty'];
+        check_ajax_referer('mona_ajax_nonce', 'nonce');
+        $key = isset($_POST['key']) ? sanitize_text_field(wp_unslash($_POST['key'])) : '';
+        $qty = isset($_POST['qty']) ? absint($_POST['qty']) : 0;
+        if ($qty < 1) {
+            $qty = 1;
+        }
 
-        $cart_item = WC()->cart->get_cart_item($key);
+        $cart_item = $key ? WC()->cart->get_cart_item($key) : false;
         if ($cart_item) {
 
             WC()->cart->set_quantity($key, $qty);
@@ -815,9 +823,10 @@ class MonaProductClass
 
     public function m_remove_cart_item()
     {
-        $key = @$_POST['key'];
-        $qty = @$_POST['qty'];
-        $cart_item = WC()->cart->get_cart_item($key);
+        check_ajax_referer('mona_ajax_nonce', 'nonce');
+        $key = isset($_POST['key']) ? sanitize_text_field(wp_unslash($_POST['key'])) : '';
+        $qty = isset($_POST['qty']) ? absint($_POST['qty']) : 0;
+        $cart_item = $key ? WC()->cart->get_cart_item($key) : false;
         if ($cart_item) {
             WC()->cart->remove_cart_item($key);
             $accessory = $cart_item['accessory'];
@@ -1522,8 +1531,12 @@ class MonaProductClass
 
     public function m_add_cart_flash()
     {
-        $data = $_POST;
-        $this->m_add_cart_item($data['product_id'], $data['qty']);
+        check_ajax_referer('mona_ajax_nonce', 'nonce');
+        $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
+        $qty = isset($_POST['qty']) ? absint($_POST['qty']) : 0;
+        if ($product_id && $qty > 0) {
+            $this->m_add_cart_item($product_id, $qty);
+        }
     }
     public function m_update_status_product()
     {

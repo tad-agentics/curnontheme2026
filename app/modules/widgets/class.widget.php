@@ -191,16 +191,14 @@ class Mona_Widgets extends Mona_Widget_Callback {
      */
     public static function get_image_id_by_url( $image_url = '' ) 
     {
-        global $wpdb;
         if ( empty ( $image_url ) ) {
             return;
         }
-        $attachment = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid='%s';", $image_url ) );
-        if ( ! empty ( $attachment ) ) {
-            return $attachment[0];
-        } else {
-            return false;
+        $attachment_id = attachment_url_to_postid( $image_url );
+        if ( ! empty( $attachment_id ) ) {
+            return $attachment_id;
         }
+        return false;
     }
 }
 

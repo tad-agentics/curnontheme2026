@@ -33,7 +33,6 @@ curnontheme2026/
 ├── page-template/          # Custom page templates
 ├── public/                 # Public assets (CSS, JS, images)
 ├── woocommerce/            # WooCommerce template overrides
-├── woocommerce_primary/    # Primary WooCommerce customizations
 ├── languages/              # Translation files
 ├── functions.php           # Theme functions and hooks
 ├── style.css              # Main stylesheet

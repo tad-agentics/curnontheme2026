@@ -86,13 +86,13 @@ if ($loop_products->have_posts()) :
                                     <?php if ($product->is_type('variable')) { ?>
                                         <a class="pdp-dk-add popup-open popup-product-attr" data-product="<?php echo $product_id ?>" data-popup="popup-attri" id="popup-attri">
                                             <span class="icon">
-                                                <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                                                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" />
                                             </span>
                                         </a>
                                     <?php } else { ?>
                                         <div class="pdp-dk-add m-add-to-cart-flash" data-product-id="<?php echo $product_id; ?>">
                                             <span class="icon">
-                                                <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                                                <img src="<?php echo esc_url(get_site_url()); ?>/template/assets/images/pro-cart.png" alt="" />
                                             </span>
                                         </div>
                                     <?php } ?>
