@@ -1,0 +1,238 @@
+<?php
+global $post;
+$product_id = $post->ID;
+$product = wc_get_product($product_id);
+$price_html = '';
+$check_stock = true;
+$mona_product = new MonaProductClass();
+
+if ($product->is_type('variable')) {
+    $variation_ids = $product->get_children();
+    if (count($variation_ids) > 0) {
+        $variation_id = reset($variation_ids);
+        $_product = new WC_Product_Variation($variation_id);
+        if ($product->get_price() == 0) {
+            $price_html = '<p class="price-new">' . __('Liên hệ', 'monamedia') . '</p>';
+        } else {
+            $price_html = $product->get_price_html();
+            $percent_sale = m_get_percent_sale($_product);
+        }
+    }
+} else {
+    if ($product->get_price() == 0) {
+        $price_html = '<p class="price-new">' . __('Liên hệ', 'monamedia') . '</p>';
+    } else {
+        $price_html = $product->get_price_html();
+        $percent_sale = m_get_percent_sale($product);
+    }
+}
+
+$status = $product->is_in_stock();
+$link = get_the_permalink($product_id);
+$title = get_the_title($product_id);
+$thumbnail = get_the_post_thumbnail($product_id, 'full');
+// $product_top_order = $mona_product->top_Order_Product();
+
+// $cls = m_get_active_wishlist($product_id);
+// if ($cls == "") {
+//     $cls = "m_add_login";
+// }
+
+// $ratingScore = get_rating_score($product_id);
+
+$args = array(
+    'status'      => 'approve',
+    'post_type'   => 'product',
+    'post_id'     => $product_id,
+);
+$evaluates = get_comments($args);
+$totalEvaluates = count($evaluates);
+
+$rp_product = get_field('rp_product', $product_id);
+if (!empty($rp_product)) {
+?>
+
+    <!-- item product has color -->
+    <div class="pro-box tabJSPro option-2">
+        <?php foreach ($rp_product as $key => $item) : ?>
+            <div class="pro-img pro-slider-js tabPanelPro">
+                <?php if (isset($item['rp']) || !empty($item['rp'])) : ?>
+                    <?php foreach ($item['rp'] as $key => $item_childe) : ?>
+                        <span class="box box-pc">
+                            <a href="<?php echo $link; ?>"><?php echo wp_get_attachment_image($item_childe['image'], 'full') ?></a>
+                        </span>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <div class="swiper proSwiper">
+                    <div class="swiper-wrapper">
+                        <?php if (isset($item['rp']) || !empty($item['rp'])) : ?>
+                            <?php foreach ($item['rp'] as $key => $item_childe) : ?>
+                                <div class="swiper-slide">
+                                    <span class="box">
+                                        <a href="<?php echo $link; ?>"><?php echo wp_get_attachment_image($item_childe['image'], 'full') ?></a>
+                                    </span>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+                <!-- add product  -->
+                <?php if ($product->is_type('variable')) { ?>
+                    <a class="pro-add pro-add-pc popup-open popup-product-attr" data-product="<?php echo $product_id ?>" data-popup="popup-attri" id="popup-attri">
+                        <span class="text is-loading-group-mobile">
+                            <?php _e('Thêm vào giỏ hàng', 'monamedia'); ?>
+                        </span>
+                        <span class="icon">
+                            <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                        </span>
+                    </a>
+                <?php } else { ?>
+                    <div class="pro-add pro-add-pc m-add-to-cart-flash" data-product-id="<?php echo $product_id; ?>">
+                        <span class="text is-loading-group">
+                            <?php _e('Thêm vào giỏ hàng', 'monamedia'); ?>
+                        </span>
+                        <span class="icon">
+                            <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                        </span>
+                    </div>
+                <?php } ?>
+                <?php if ($percent_sale) : ?>
+                    <span class="pro-tag">
+                        <?php echo $percent_sale; ?>
+                    </span>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+        <div class="pro-desc">
+            <a class="pro-name" href="<?php echo $link; ?>"><?php echo $title; ?></a>
+            <div class="pro-price">
+                <?php echo $price_html; ?>
+            </div>
+            <div class="pro-desc-op">
+                <div class="recheck">
+                    <div class="recheck-block">
+                        <?php foreach ($rp_product as $key => $item) : ?>
+                            <div class="recheck-item tabBtnPro">
+                                <input class="recheck-input" type="radio" name="" hidden="" <?php if ($key == 0) {
+                                                                                                echo 'checked';
+                                                                                            } ?> />
+                                <div class="recheck-checkbox">
+                                    <?php echo wp_get_attachment_image($item['color'], 'full') ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- add product mobile  -->
+            <?php if ($product->is_type('variable')) { ?>
+                <div class="pro-add pro-add-mb popup-open popup-product-attr" data-product="<?php echo $product_id ?>" data-popup="popup-attri" id="popup-attri">
+                    <span class="text is-loading-group-mobile"> <?php _e('Thêm', 'monamedia'); ?></span>
+                    <span class="icon">
+                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span>
+                </div>
+            <?php } else { ?>
+                <a class="pro-add pro-add-mb m-add-to-cart-flash" data-product-id="<?php echo $product_id; ?>">
+                    <span class="text is-loading-group"> <?php _e('Thêm', 'monamedia'); ?></span>
+                    <span class="icon">
+                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span>
+                </a>
+            <?php } ?>
+
+        </div>
+    </div>
+
+<?php } else { ?>
+
+    <!-- item product no color  -->
+    <div class="pro-box">
+        <div class="pro-img pro-slider-js">
+            <div class="box box-pc">
+                <a href="<?php echo $link; ?>"><?php echo $thumbnail; ?></a>
+            </div>
+            <div class="box box-pc">
+                <a href="<?php echo $link; ?>"><?php echo wp_get_attachment_image(get_field('mona_hinh_anh_nguoi_mau', $product_id), 'full') ?></a>
+            </div>
+            <div class="swiper proSwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <a href="<?php echo $link; ?>"><?php echo $thumbnail; ?></a>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="box">
+                            <a href="<?php echo $link; ?>"><?php echo wp_get_attachment_image(get_field('mona_hinh_anh_nguoi_mau', $product_id), 'full') ?></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+            <!-- add product  -->
+            <?php if ($product->is_type('variable')) { ?>
+                <a class="pro-add pro-add-pc popup-open popup-product-attr" data-product="<?php echo $product_id ?>" data-popup="popup-attri" id="popup-attri">
+
+                    <span class="text is-loading-group-mobile">
+                        <?php _e('Thêm vào giỏ hàng', 'monamedia'); ?>
+                    </span>
+                    <span class="icon">
+                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                    </span>
+                </a>
+
+            <?php } else { ?>
+
+                <div class="pro-add pro-add-pc m-add-to-cart-flash" data-product-id="<?php echo $product_id; ?>">
+
+                    <span class="text is-loading-group">
+                        <?php _e('Thêm vào giỏ hàng', 'monamedia'); ?>
+                    </span>
+                    <span class="icon">
+                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" />
+                    </span>
+
+                </div>
+
+            <?php } ?>
+
+            <?php if ($percent_sale) : ?>
+                <span class="pro-tag">
+                    <?php echo $percent_sale; ?>
+                </span>
+            <?php endif; ?>
+        </div>
+
+        <div class="pro-desc">
+            <a class="pro-name" href="<?php echo $link; ?>"><?php echo $title; ?></a>
+            <div class="pro-price">
+                <?php echo $price_html; ?>
+            </div>
+
+            <!-- add product mobile  -->
+            <?php if ($product->is_type('variable')) { ?>
+
+                <div class="pro-add pro-add-mb popup-open popup-product-attr" data-product="<?php echo $product_id ?>" data-popup="popup-attri" id="popup-attri">
+
+                    <span class="text is-loading-group-mobile"> <?php _e('Thêm', 'monamedia'); ?></span>
+                    <span class="icon">
+                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span>
+
+                </div>
+
+            <?php } else { ?>
+
+                <a class="pro-add pro-add-mb m-add-to-cart-flash" data-product-id="<?php echo $product_id; ?>">
+                    <span class="text is-loading-group"> <?php _e('Thêm', 'monamedia'); ?></span>
+                    <span class="icon">
+                        <img src="<?php get_site_url(); ?>/template/assets/images/pro-cart.png" alt="" /></span>
+                </a>
+
+            <?php } ?>
+
+        </div>
+    </div>
+
+<?php } ?>

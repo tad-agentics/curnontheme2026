@@ -1,0 +1,293 @@
+/*** Import *****/
+
+@import url("404.css");
+@import url("loading-btn.css");
+@import url("loading-group.css");
+@import url("mona-alert.css");
+
+/*** End ****/
+
+#wpadminbar #wp-admin-bar-wp-logo>.ab-item img {
+    width: 100%;
+    height: 100%;
+}
+
+.blog-info-tag span:before {
+    content: ",";
+    position: absolute;
+    bottom: 6px;
+    right: 0;
+    height: 100%;
+    font-size: 16px;
+    width: auto;
+    padding-right: 5px;
+}
+
+.blog-info-tag span {
+    position: relative;
+    display: inline-block;
+    padding-right: 10px;
+}
+
+.blog-info-tag span:last-child:before {
+    display: none;
+}
+
+.wpcf7 form .wpcf7-response-output {
+    border: 0;
+    margin: 15px 0;
+    padding: 0;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.wpcf7 form.sent .wpcf7-response-output {
+    color: #46b450;
+}
+
+.wpcf7 form.invalid .wpcf7-response-output {
+    color: red;
+}
+
+.wpcf7-not-valid-tip {
+    position: absolute;
+}
+
+
+/**/
+
+.widget_nav_menu .mona-widget-title {
+    display: none;
+}
+
+#wpadminbar {
+    /* display: none !important; */
+}
+
+#submit_ft {
+    display: none;
+}
+
+.wpcf7-spinner {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    transform: translateX(-270%);
+}
+
+.wpcf7-not-valid-tip {
+    display: none;
+}
+
+.footer-col .wpcf7-response-output {
+    width: 100%;
+    margin-top: 0.5rem;
+    text-align: center;
+    position: absolute;
+}
+
+.footer-col {
+    position: relative;
+}
+
+.mona-content #ez-toc-container {
+    display: none;
+}
+
+.support {
+    position: relative;
+}
+
+.support .wpcf7-response-output {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 1.5rem;
+}
+
+.support .wpcf7-spinner {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    transform: translateX(-186%);
+}
+
+#payment {
+    display: none;
+}
+
+p#billing_email_field {
+    /* order: 1; */
+    width: 100%;
+}
+
+#billing_email_field label {
+    display: none;
+}
+
+p#billing_last_name_field {
+    /* order: 2; */
+    width: 50%;
+}
+
+#billing_last_name_field label {
+    display: none;
+}
+
+
+/* p#billing_first_name_field {
+  order: 3;
+} */
+
+p#billing_phone_field {
+    /* order: 4; */
+    width: 50%;
+}
+
+#billing_phone_field label {
+    display: none;
+}
+
+p#order_comments_field {
+    /* order: 9; */
+    width: 100%;
+}
+
+#order_comments_field label {
+    display: none;
+}
+
+p#billing_address_1_field {
+    /* order: 5; */
+    width: 100%;
+}
+
+#billing_address_1_field label {
+    display: none;
+}
+
+p#billing_state_field {
+    /* order: 6; */
+    width: 33%;
+}
+
+#billing_state_field label {
+    display: none;
+}
+
+p#billing_city_field {
+    /* order: 7; */
+    width: 33%;
+}
+
+#billing_city_field label {
+    display: none;
+}
+
+p#billing_address_2_field {
+    /* order: 8; */
+    width: 33%;
+}
+
+#billing_address_2_field label {
+    display: none;
+}
+
+.pcart-left .woocommerce-billing-fields__field-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.woocommerce-billing-fields h3 {
+    display: none;
+}
+
+.woocommerce-billing-fields label {
+    display: none;
+}
+
+.wc-empty-cart-message {
+    display: none;
+}
+
+.woocommerce-MyAccount-navigation {
+    display: none;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content {
+    width: 100%;
+}
+
+.btn-call-checkout {
+    color: #ffffff;
+    z-index: 3;
+    font-size: 1.6rem;
+    position: relative;
+    display: block !important;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.popup-down-form {
+    position: relative;
+}
+
+.popup-down-form .wpcf7-spinner {
+    transform: translateX(-220%);
+}
+
+.popup-down-form .wpcf7-response-output {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    margin-top: 0.5rem !important;
+}
+
+#MenuFrimary {
+    text-transform: uppercase;
+}
+
+.mona-content p {
+    font-family: "Montserrat" !important;
+}
+
+.mona-content table {
+    font-family: "Montserrat" !important;
+}
+
+.billing_address_2_field label {
+    display: none !important;
+}
+
+.btn-pri:disabled {
+    opacity: 0.5;
+}
+
+.btn-second:disabled {
+    opacity: 0.5;
+}
+
+.woocommerce-notices-wrapper {
+    display: none;
+}
+
+.info-banking {
+    padding-bottom: 2rem;
+}
+
+.hnew {
+    overflow: hidden;
+}
+
+.header-nav .menu-nav>.menu-list>.menu-item:not(:hover)>.mega-menu {
+    top: calc(var(--size-hd) + 0.5rem);
+}
+
+.header-nav .menu-nav>.menu-list>.menu-item:not(:hover)>.mega-menu .mega-qt-img {
+    transition: 0s;
+}
+
+.mega-qt-img img {
+    height: 100% !important;
+}

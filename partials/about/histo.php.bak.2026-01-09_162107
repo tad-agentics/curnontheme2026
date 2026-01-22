@@ -1,0 +1,59 @@
+<?php
+
+/**
+ * Section name: Home Banners
+ * Description: 
+ * Author: Monamedia
+ * Order: 4
+ */
+$mona_sc_5_group = get_field('mona_sc_5_group');
+if (isset($mona_sc_5_group['rp']) || !empty($mona_sc_5_group['rp'])) :
+?>
+    <div class="histo">
+        <div class="histo-wrap">
+            <div class="histo-top">
+                <div class="histo-top-list" data-aos="zoom-in">
+                    <?php
+                    $count = 1;
+                    foreach ($mona_sc_5_group['rp'] as $key => $item) : ?>
+                        <a class="histo-top-item f-title" href="#histo<?php echo $count; ?>">
+                            <?php echo $item['year']; ?>
+                        </a>
+                    <?php
+                        $count++;
+                    endforeach; ?>
+                </div>
+            </div>
+            <div class="histo-ctn">
+                <div class="container">
+                    <?php
+                    $count = 1;
+                    foreach ($mona_sc_5_group['rp'] as $key => $item) : ?>
+                        <div class="histo-item" id="histo<?php echo $count; ?>">
+                            <div class="histo-flex">
+                                <?php if (isset($item['gallery']) || !empty($item['gallery'])) : ?>
+                                    <div class="histo-left" data-aos="zoom-in">
+                                        <div class="histo-img">
+                                            <?php foreach ($item['gallery'] as $key => $item_chill) : ?>
+                                                <div class="box">
+                                                    <?php echo wp_get_attachment_image($item_chill, 'full'); ?>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="histo-right" data-aos="fade-up">
+                                    <p class="fw-5 t20"><?php echo $item['year']; ?></p>
+                                    <p class="title fw-7 f-title"><?php echo $item['title']; ?></p>
+                                    <div class="desc fw-5 t20 mona-content"><?php echo $item['des']; ?></div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                        $count++;
+                    endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

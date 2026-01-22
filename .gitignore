@@ -1,0 +1,59 @@
+# WordPress Theme .gitignore
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Node modules (if using build tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build files
+/dist/
+/build/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+
+# Compressed files (keep originals)
+*.zip
+*.tar.gz
+*.rar
+
+# Large screenshot files (optional - uncomment if you want to exclude)
+# screenshot.png
+# screenshot.png.webp
+
+# Environment files
+.env
+.env.local
+
+# Cache
+.cache/
+*.cache
