@@ -1,6 +1,6 @@
-# MONA.Media Theme v3
+# Curnon Theme 2026
 
-A custom WordPress theme built for e-commerce and content websites with full WooCommerce integration.
+A custom WordPress theme built for e-commerce and content websites with full WooCommerce integration. Based on MONA.Media Theme v3 architecture.
 
 ## Theme Information
 
@@ -26,7 +26,7 @@ A custom WordPress theme built for e-commerce and content websites with full Woo
 ## Directory Structure
 
 ```
-monatheme/
+curnontheme2026/
 ├── app/                    # Application logic and classes
 ├── core/                   # Core theme functionality
 ├── partials/               # Reusable template parts/components
